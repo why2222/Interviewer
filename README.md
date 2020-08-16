@@ -1,12 +1,12 @@
 # 面试总结
 ![Java](https://tva1.sinaimg.cn/large/007S8ZIlly1ghpipi0ggkj307w04xjr8.jpg)
 ## 目录
-* **Java**
+
 <details>
 <summary>Java</summary>
 
 <details>
-<summary>基础知识</summary>
+<summary>* 基础知识</summary>
  
 * [Java概述](https://github.com/why2222/JavaInterviewer/wiki/Java-%E5%9F%BA%E7%A1%80#%E4%B8%80java%E6%A6%82%E8%BF%B0)
 * [基础语法](https://github.com/why2222/JavaInterviewer/wiki/Java-%E5%9F%BA%E7%A1%80#%E4%BA%8C%E5%9F%BA%E7%A1%80%E8%AF%AD%E6%B3%95)
