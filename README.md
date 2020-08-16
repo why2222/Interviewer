@@ -2,6 +2,8 @@
 ![Java](https://tva1.sinaimg.cn/large/007S8ZIlly1ghpipi0ggkj307w04xjr8.jpg)
 ## 目录
 * **Java**
+<details>
+<summary>Java</summary>
 
 <details>
 <summary>基础知识</summary>
@@ -12,6 +14,7 @@
 * [IO流](https://github.com/why2222/JavaInterviewer/wiki/Java-%E5%9F%BA%E7%A1%80#%E5%9B%9Bio%E6%B5%81)
 * [反射](https://github.com/why2222/JavaInterviewer/wiki/Java-%E5%9F%BA%E7%A1%80#%E5%9B%9Bio%E6%B5%81)
 * [常用API](https://github.com/why2222/JavaInterviewer/wiki/Java-%E5%9F%BA%E7%A1%80#%E5%9B%9Bio%E6%B5%81)
+</details>
 </details>
 
   * **基础知识**
