@@ -6,12 +6,12 @@
 
   * **基础知识**
  
-    * [Java概述](https://github.com/why2222/JavaInterviewer/wiki/Java-%E5%9F%BA%E7%A1%80#%E4%B8%80java%E6%A6%82%E8%BF%B0)
-    * [基础语法](https://github.com/why2222/JavaInterviewer/wiki/Java-%E5%9F%BA%E7%A1%80#%E4%BA%8C%E5%9F%BA%E7%A1%80%E8%AF%AD%E6%B3%95)
-    * [面向对象](https://github.com/why2222/JavaInterviewer/wiki/Java-%E5%9F%BA%E7%A1%80#%E4%B8%89%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1)
-    * [IO流](https://github.com/why2222/JavaInterviewer/wiki/Java-%E5%9F%BA%E7%A1%80#%E5%9B%9Bio%E6%B5%81)
-    * [反射](https://github.com/why2222/JavaInterviewer/wiki/Java-%E5%9F%BA%E7%A1%80#%E5%9B%9Bio%E6%B5%81)
-    * [常用API](https://github.com/why2222/JavaInterviewer/wiki/Java-%E5%9F%BA%E7%A1%80#%E5%9B%9Bio%E6%B5%81)
+    * [Java概述](https://github.com/why2222/Interviewer#%E4%B8%80java%E6%A6%82%E8%BF%B0)
+    * [基础语法](https://github.com/why2222/Interviewer#%E4%BA%8C%E5%9F%BA%E7%A1%80%E8%AF%AD%E6%B3%95)
+    * [面向对象](https://github.com/why2222/Interviewer#%E4%B8%89%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1)
+    * [IO流](https://github.com/why2222/Interviewer#%E4%B8%89io%E6%B5%81)
+    * [反射](https://github.com/why2222/Interviewer#%E5%9B%9B%E5%8F%8D%E5%B0%84)
+    * [常用API](https://github.com/why2222/Interviewer#%E4%BA%94%E5%B8%B8%E7%94%A8api)
 
   * **集合容器**
  
