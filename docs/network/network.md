@@ -27,9 +27,7 @@
 
 
 
-![](https://tva1.sinaimg.cn/large/007S8ZIlly1ghvduqv2qkj30fa06azle.jpg)
-
-
+[11](https://tva1.sinaimg.cn/large/007S8ZIlly1ghvduqv2qkj30fa06azle.jpg)
 
 - OSI参考模型
   - OSI（Open System Interconnect），即开放式系统互联。一般都叫OSI参考模型，是ISO（国际标准化组织）组织在1985年研究的网络互连模型。ISO为了更好的使网络应用更为普及，推出了OSI参考模型，这样所有的公司都按照统一的标准来指定自己的网络，就可以互通互联了。
