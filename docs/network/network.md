@@ -27,7 +27,7 @@
 
 
 
-![在这里插入图片描述](https://user-gold-cdn.xitu.io/2020/4/13/1717297c7320a555?imageView2/0/w/1280/h/960/format/webp/ignore-error/1)
+![在这里插入图片描述](https://tva1.sinaimg.cn/large/007S8ZIlly1ghvduqv2qkj30fa06azle.jpg)
 
 
 
@@ -35,7 +35,7 @@
   - OSI（Open System Interconnect），即开放式系统互联。一般都叫OSI参考模型，是ISO（国际标准化组织）组织在1985年研究的网络互连模型。ISO为了更好的使网络应用更为普及，推出了OSI参考模型，这样所有的公司都按照统一的标准来指定自己的网络，就可以互通互联了。
   - OSI定义了网络互连的七层框架（物理层、数据链路层、网络层、传输层、会话层、表示层、应用层）。
 
-> ![在这里插入图片描述](https://user-gold-cdn.xitu.io/2020/4/13/1717297c7324a8f0?imageView2/0/w/1280/h/960/format/webp/ignore-error/1)
+> ![在这里插入图片描述](https://tva1.sinaimg.cn/large/007S8ZIlly1ghvdwjegy7j30ty0z5ae7.jpg)
 
 - **TCP/IP参考模型**
 - TCP/IP四层协议（数据链路层、网络层、传输层、应用层）
@@ -125,7 +125,7 @@
 
 
 
-![在这里插入图片描述](https://user-gold-cdn.xitu.io/2020/4/13/1717297c73467e00?imageView2/0/w/1280/h/960/format/webp/ignore-error/1)
+![在这里插入图片描述](https://tva1.sinaimg.cn/large/007S8ZIlly1ghvdxe5jxgj30ef073a9y.jpg)
 
 
 
@@ -181,7 +181,7 @@
 
 
 
-![在这里插入图片描述](https://user-gold-cdn.xitu.io/2020/4/13/1717297c746f6ee2?imageView2/0/w/1280/h/960/format/webp/ignore-error/1)
+![在这里插入图片描述](https://tva1.sinaimg.cn/large/007S8ZIlly1ghvdyoujxzj30e308hmx2.jpg)
 
 
 
@@ -223,7 +223,6 @@
 
 - Socket偏向于底层。一般很少直接使用Socket来编程，框架底层使用Socket比较多，
 
-  ![在这里插入图片描述](https://user-gold-cdn.xitu.io/2020/4/13/1717297c768507e4?imageView2/0/w/1280/h/960/format/webp/ignore-error/1)
 
   
 
@@ -231,7 +230,7 @@
 
 
 
-![在这里插入图片描述](https://user-gold-cdn.xitu.io/2020/4/13/1717297c7c7176ba?imageView2/0/w/1280/h/960/format/webp/ignore-error/1)
+![在这里插入图片描述](https://tva1.sinaimg.cn/large/007S8ZIlly1ghve0sfbh2j30ie08h75x.jpg)
 
 
 
@@ -322,14 +321,6 @@ public class Client01 {
 复制代码
 ```
 
-`先运行服务端，在运行客户端`。测试结果发送成功：
-
-![在这里插入图片描述](https://user-gold-cdn.xitu.io/2020/4/13/1717297c9803dcaf?imageView2/0/w/1280/h/960/format/webp/ignore-error/1)
-
-·
-
-![在这里插入图片描述](https://user-gold-cdn.xitu.io/2020/4/13/1717297ca3ffbda2?imageView2/0/w/1280/h/960/format/webp/ignore-error/1)
-
 
 
 #### 5 UDP协议Socket代码示例：
@@ -394,9 +385,6 @@ public class Client1 {
 复制代码
 ```
 
-`先运行服务端，在运行客户端`。测试结果成功发送成功：
-
-![在这里插入图片描述](https://user-gold-cdn.xitu.io/2020/4/13/1717297ca5df17df?imageView2/0/w/1280/h/960/format/webp/ignore-error/1)
 
 
 
@@ -436,19 +424,13 @@ public class Client1 {
 - HTTP请求体由：请求行 、请求头、请求数据组成的，
 - 注意：GIT请求是没有请求体的
 
-1. POST请求
-
-   
-
-2. GIT请求是没有请求体的 ![在这里插入图片描述](https://user-gold-cdn.xitu.io/2020/4/13/1717297cbc5c7a1c?imageView2/0/w/1280/h/960/format/webp/ignore-error/1) `发现只有请求行和请求头，少了个请求体`
-
 #### http的响应报文有哪些？
 
 - http的响应报是服务器返回给我们的数据，必须先有请求体再有响应报文
 
 - 响应报文包含三部分 状态行、响应首部字段、响应内容实体实现
 
-  ![在这里插入图片描述](https://user-gold-cdn.xitu.io/2020/4/13/1717297cbf073fa2?imageView2/0/w/1280/h/960/format/webp/ignore-error/1)
+  ![在这里插入图片描述](https://tva1.sinaimg.cn/large/007S8ZIlly1ghve30rst5j30te0cidgm.jpg)
 
   
 
