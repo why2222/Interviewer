@@ -4920,3 +4920,2935 @@ Exchanger是一个用于线程间协作的工具类，用于两个线程间交�
 * Semaphore(信号量)-允许多个线程同时访问： synchronized 和 ReentrantLock 都是一次只允许一个线程访问某个资源，Semaphore(信号量)可以指定多个线程同时访问某个资源。
 * CountDownLatch(倒计时器)： CountDownLatch是一个同步工具类，用来协调多个线程之间的同步。这个工具通常用来控制线程等待，它可以让某一个线程等待直到倒计时结束，再开始执行。
 * CyclicBarrier(循环栅栏)： CyclicBarrier 和 CountDownLatch 非常类似，它也可以实现线程间的技术等待，但是它的功能比 CountDownLatch 更加复杂和强大。主要应用场景和 CountDownLatch 类似。CyclicBarrier 的字面意思是可循环使用（Cyclic）的屏障（Barrier）。它要做的事情是，让一组线程到达一个屏障（也可以叫同步点）时被阻塞，直到最后一个线程到达屏障时，屏障才会开门，所有被屏障拦截的线程才会继续干活。CyclicBarrier默认的构造方法是 CyclicBarrier(int parties)，其参数表示屏障拦截的线程数量，每个线程调用await()方法告诉 CyclicBarrier 我已经到达了屏障，然后当前线程被阻塞。
+
+---
+
+# 一、Spring概述
+
+## 1.什么是spring?
+
+Spring是一个轻量级Java开发框架，最早有Rod Johnson创建，目的是为了解决企业级应用开发的业务逻辑层和其他各层的耦合问题。它是一个分层的JavaSE/JavaEE full-stack（一站式）轻量级开源框架，为开发Java应用程序提供全面的基础架构支持。Spring负责基础架构，因此Java开发者可以专注于应用程序的开发。
+
+Spring最根本的使命是**解决企业级应用开发的复杂性，即简化Java开发。**
+
+Spring可以做很多事情，它为企业级开发提供给了丰富的功能，但是这些功能的底层都依赖于它的两个核心特性，也就是依赖注入（dependency injection，DI）和面向切面编程（aspect-oriented programming，AOP）。
+
+为了降低Java开发的复杂性，Spring采取了以下4种关键策略
+
+* 基于POJO的轻量级和最小侵入性编程；
+* 通过依赖注入和面向接口实现松耦合；
+* 基于切面和惯例进行声明式编程；
+* 通过切面和模板减少样板式代码。
+## 2.Spring框架的设计目标，设计理念，和核心是什么
+
+**Spring设计目标**：Spring为开发者提供一个一站式轻量级应用开发平台；
+
+**Spring设计理念**：在JavaEE开发中，支持POJO和JavaBean开发方式，使应用面向接口开发，充分支持OO（面向对象）设计方法；Spring通过IoC容器实现对象耦合关系的管理，并实现依赖反转，将对象之间的依赖关系交给IoC容器，实现解耦；
+
+**Spring框架的核心**：IoC容器和AOP模块。通过IoC容器管理POJO对象以及他们之间的耦合关系；通过AOP以动态非侵入的方式增强服务。
+
+IoC让相互协作的组件保持松散的耦合，而AOP编程允许你把遍布于应用各层的功能分离出来形成可重用的功能组件。
+
+## 3.Spring的优缺点是什么？
+
+**优点**
+
+* 方便解耦，简化开发：Spring就是一个大工厂，可以将所有对象的创建和依赖关系的维护，交给Spring管理。
+* AOP编程的支持：Spring提供面向切面编程，可以方便的实现对程序进行权限拦截、运行监控等功能。
+* 声明式事务的支持：只需要通过配置就可以完成对事务的管理，而无需手动编程。
+* 方便程序的测试：Spring对Junit4支持，可以通过注解方便的测试Spring程序。
+* 方便集成各种优秀框架：Spring不排斥各种优秀的开源框架，其内部提供了对各种优秀框架的直接支持（如：Struts、Hibernate、MyBatis等）。
+* 降低JavaEE API的使用难度：Spring对JavaEE开发中非常难用的一些API（JDBC、JavaMail、远程调用等），都提供了封装，使这些API应用难度大大降低。
+
+**缺点**
+
+* Spring明明一个很轻量级的框架，却给人感觉大而全
+* Spring依赖反射，反射影响性能
+* 使用门槛升高，入门Spring需要较长时间
+## 4.Spring有哪些应用场景
+
+**应用场景：**JavaEE企业应用开发，包括SSH、SSM等
+
+**Spring价值：**
+
+* Spring是非侵入式的框架，目标是使应用程序代码对框架依赖最小化；
+* Spring提供一个一致的编程模型，使应用直接使用POJO开发，与运行环境隔离开来；
+* Spring推动应用设计风格向面向对象和面向接口开发转变，提高了代码的重用性和可测试性；
+## 5.Spring由哪些模块组成？
+
+Spring 总共大约有 20 个模块， 由 1300 多个不同的文件构成。 而这些组件被分别整合在核心容器（Core Container） 、 AOP（Aspect Oriented Programming）和设备支持（Instrmentation） 、数据访问与集成（Data Access/Integeration） 、 Web、 消息（Messaging） 、 Test等 6 个模块中。 以下是 Spring 5 的模块结构图：
+
+![图片](https://uploader.shimo.im/f/myhd7aN9SwkYSTRF.png!thumbnail)
+
+* spring core：提供了框架的基本组成部分，包括控制反转（Inversion of Control，IOC）和依赖注入（Dependency Injection，DI）功能。
+* spring beans：提供了BeanFactory，是工厂模式的一个经典实现，Spring将管理对象称为Bean。
+* spring context：构建于 core 封装包基础上的 context 封装包，提供了一种框架式的对象访问方法。
+* spring jdbc：提供了一个JDBC的抽象层，消除了烦琐的JDBC编码和数据库厂商特有的错误代码解析， 用于简化JDBC。
+* spring aop：提供了面向切面的编程实现，让你可以自定义拦截器、切点等。
+* spring Web：提供了针对 Web 开发的集成特性，例如文件上传，利用 servlet listeners 进行 ioc 容器初始化和针对 Web 的 ApplicationContext。
+* spring test：主要为测试提供支持的，支持使用JUnit或TestNG对Spring组件进行单元测试和集成测试。
+## 6.Spring 框架中都用到了哪些设计模式？
+
+1. 工厂模式：BeanFactory就是简单工厂模式的体现，用来创建对象的实例；
+2. 单例模式：Bean默认为单例模式。
+3. 代理模式：Spring的AOP功能用到了JDK的动态代理和CGLIB字节码生成技术；
+4. 模板方法：用来解决代码重复的问题。比如. RestTemplate, JmsTemplate, JpaTemplate。
+5. 观察者模式：定义对象键一种一对多的依赖关系，当一个对象的状态发生改变时，所有依赖于它的对象都会得到通知被制动更新，如Spring中listener的实现–ApplicationListener。
+## 7.详细讲解一下核心容器（spring context应用上下文) 模块
+
+这是基本的Spring模块，提供spring 框架的基础功能，BeanFactory 是 任何以spring为基础的应用的核心。Spring 框架建立在此模块之上，它使Spring成为一个容器。
+
+Bean 工厂是工厂模式的一个实现，提供了控制反转功能，用来把应用的配置和依赖从真正的应用代码中分离。最常用的就是org.springframework.beans.factory.xml.XmlBeanFactory ，它根据XML文件中的定义加载beans。该容器从XML 文件读取配置元数据并用它去创建一个完全配置的系统或应用。
+
+## 8.Spring框架中有哪些不同类型的事件
+
+Spring 提供了以下5种标准的事件：
+
+1. 上下文更新事件（ContextRefreshedEvent）：在调用ConfigurableApplicationContext 接口中的refresh()方法时被触发。
+2. 上下文开始事件（ContextStartedEvent）：当容器调用ConfigurableApplicationContext的Start()方法开始/重新开始容器时触发该事件。
+3. 上下文停止事件（ContextStoppedEvent）：当容器调用ConfigurableApplicationContext的Stop()方法停止容器时触发该事件。
+4. 上下文关闭事件（ContextClosedEvent）：当ApplicationContext被关闭时触发该事件。容器被关闭时，其管理的所有单例Bean都被销毁。
+5. 请求处理事件（RequestHandledEvent）：在Web应用中，当一个http请求（request）结束触发该事件。如果一个bean实现了ApplicationListener接口，当一个ApplicationEvent 被发布以后，bean会自动被通知。
+## 9.Spring 应用程序有哪些不同组件？
+
+Spring 应用一般有以下组件：
+
+* 接口 - 定义功能。
+* Bean 类 - 它包含属性，setter 和 getter 方法，函数等。
+* Bean 配置文件 - 包含类的信息以及如何配置它们。
+* Spring 面向切面编程（AOP） - 提供面向切面编程的功能。
+* 用户程序 - 它使用接口。
+## 10.使用 Spring 有哪些方式？
+
+使用 Spring 有以下方式：
+
+* 作为一个成熟的 Spring Web 应用程序。
+* 作为第三方 Web 框架，使用 Spring Frameworks 中间层。
+* 作为企业级 Java Bean，它可以包装现有的 POJO（Plain Old Java Objects）。
+* 用于远程使用。
+# 二、Spring控制反转(IOC)
+
+## 1.什么是Spring IOC 容器？
+
+控制反转即IoC (Inversion of Control)，它把传统上由程序代码直接操控的对象的调用权交给容器，通过容器来实现对象组件的装配和管理。所谓的“控制反转”概念就是对组件对象控制权的转移，从程序代码本身转移到了外部容器。
+
+Spring IOC 负责创建对象，管理对象（通过依赖注入（DI），装配对象，配置对象，并且管理这些对象的整个生命周期。
+
+## 2.控制反转(IoC)有什么作用
+
+* 管理对象的创建和依赖关系的维护。对象的创建并不是一件简单的事，在对象关系比较复杂时，如果依赖关系需要程序猿来维护的话，那是相当头疼的
+* 解耦，由容器去维护具体的对象
+* 托管了类的产生过程，比如我们需要在类的产生过程中做一些处理，最直接的例子就是代理，如果有容器程序可以把这部分处理交给容器，应用程序则无需去关心类是如何完成代理的
+## 3.IOC的优点是什么？
+
+* IOC 或 依赖注入把应用的代码量降到最低。
+* 它使应用容易测试，单元测试不再需要单例和JNDI查找机制。
+* 最小的代价和最小的侵入性使松散耦合得以实现。
+* IOC容器支持加载服务时的饿汉式初始化和懒加载。
+## 4.Spring IoC 的实现机制
+
+Spring 中的 IoC 的实现原理就是工厂模式加反射机制。
+
+示例：
+
+```
+interface Fruit {
+   public abstract void eat();
+ }
+class Apple implements Fruit {
+    public void eat(){
+        System.out.println("Apple");
+    }
+}
+class Orange implements Fruit {
+    public void eat(){
+        System.out.println("Orange");
+    }
+}
+class Factory {
+    public static Fruit getInstance(String ClassName) {
+        Fruit f=null;
+        try {
+            f=(Fruit)Class.forName(ClassName).newInstance();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return f;
+    }
+}
+class Client {
+    public static void main(String[] a) {
+        Fruit f=Factory.getInstance("io.github.dunwu.spring.Apple");
+        if(f!=null){
+            f.eat();
+        }
+    }
+}
+```
+## 5.Spring 的 IoC支持哪些功能
+
+Spring 的 IoC 设计支持以下功能：
+
+* 依赖注入
+* 依赖检查
+* 自动装配
+* 支持集合
+* 指定初始化方法和销毁方法
+* 支持回调某些方法（但是需要实现 Spring 接口，略有侵入）
+
+其中，最重要的就是依赖注入，从 XML 的配置上说，即 ref 标签。对应 Spring RuntimeBeanReference 对象。
+
+对于 IoC 来说，最重要的就是容器。容器管理着 Bean 的生命周期，控制着 Bean 的依赖注入。
+
+## 6.BeanFactory 和 ApplicationContext有什么区别？
+
+BeanFactory和ApplicationContext是Spring的两大核心接口，都可以当做Spring的容器。其中ApplicationContext是BeanFactory的子接口。
+
+**依赖关系**
+
+BeanFactory：是Spring里面最底层的接口，包含了各种Bean的定义，读取bean配置文档，管理bean的加载、实例化，控制bean的生命周期，维护bean之间的依赖关系。
+
+ApplicationContext接口作为BeanFactory的派生，除了提供BeanFactory所具有的功能外，还提供了更完整的框架功能：
+
+* 继承MessageSource，因此支持国际化。
+* 统一的资源文件访问方式。
+* 提供在监听器中注册bean的事件。
+* 同时加载多个配置文件。
+* 载入多个（有继承关系）上下文 ，使得每一个上下文都专注于一个特定的层次，比如应用的web层。
+
+**加载方式**
+
+BeanFactroy采用的是延迟加载形式来注入Bean的，即只有在使用到某个Bean时(调用getBean())，才对该Bean进行加载实例化。这样，我们就不能发现一些存在的Spring的配置问题。如果Bean的某一个属性没有注入，BeanFacotry加载后，直至第一次使用调用getBean方法才会抛出异常。
+
+ApplicationContext，它是在容器启动时，一次性创建了所有的Bean。这样，在容器启动时，我们就可以发现Spring中存在的配置错误，这样有利于检查所依赖属性是否注入。 ApplicationContext启动后预载入所有的单实例Bean，通过预载入单实例bean ,确保当你需要的时候，你就不用等待，因为它们已经创建好了。
+
+相对于基本的BeanFactory，ApplicationContext 唯一的不足是占用内存空间。当应用程序配置Bean较多时，程序启动较慢。
+
+**创建方式**
+
+BeanFactory通常以编程的方式被创建，ApplicationContext还能以声明的方式创建，如使用ContextLoader。
+
+**注册**方式
+
+BeanFactory和ApplicationContext都支持BeanPostProcessor、BeanFactoryPostProcessor的使用，但两者之间的区别是：BeanFactory需要手动注册，而ApplicationContext则是自动注册。
+
+## 7.Spring 如何设计容器的，BeanFactory和ApplicationContext的关系详解
+
+Spring 作者 Rod Johnson 设计了两个接口用以表示容器。
+
+* BeanFactory
+* ApplicationContext
+
+BeanFactory 简单粗暴，可以理解为就是个 HashMap，Key 是 BeanName，Value 是 Bean 实例。通常只提供注册（put），获取（get）这两个功能。我们可以称之为 “低级容器”。
+
+ApplicationContext 可以称之为 “高级容器”。因为他比 BeanFactory 多了更多的功能。他继承了多个接口。因此具备了更多的功能。例如资源的获取，支持多种消息（例如 JSP tag 的支持），对 BeanFactory 多了工具级别的支持等待。所以你看他的名字，已经不是 BeanFactory 之类的工厂了，而是 “应用上下文”， 代表着整个大容器的所有功能。该接口定义了一个 refresh 方法，此方法是所有阅读 Spring 源码的人的最熟悉的方法，用于刷新整个容器，即重新加载/刷新所有的 bean。
+
+当然，除了这两个大接口，还有其他的辅助接口，这里就不介绍他们了。
+
+BeanFactory和ApplicationContext的关系
+
+为了更直观的展示 “低级容器” 和 “高级容器” 的关系，这里通过常用的 ClassPathXmlApplicationContext 类来展示整个容器的层级 UML 关系。
+
+![图片](https://uploader.shimo.im/f/xhlBFpgiZbcrOzAp.png!thumbnail)
+
+有点复杂？ 先不要慌，我来解释一下。
+
+最上面的是 BeanFactory，下面的 3 个绿色的，都是功能扩展接口，这里就不展开讲。
+
+看下面的隶属 ApplicationContext 粉红色的 “高级容器”，依赖着 “低级容器”，这里说的是依赖，不是继承哦。他依赖着 “低级容器” 的 getBean 功能。而高级容器有更多的功能：支持不同的信息源头，可以访问文件资源，支持应用事件（Observer 模式）。
+
+通常用户看到的就是 “高级容器”。 但 BeanFactory 也非常够用啦！
+
+左边灰色区域的是 “低级容器”， 只负载加载 Bean，获取 Bean。容器其他的高级功能是没有的。例如上图画的 refresh 刷新 Bean 工厂所有配置，生命周期事件回调等。
+
+**小结**
+
+说了这么多，不知道你有没有理解Spring IoC？ 这里小结一下：IoC 在 Spring 里，只需要低级容器就可以实现，2 个步骤：
+
+1. 加载配置文件，解析成 BeanDefinition 放在 Map 里。
+2. 调用 getBean 的时候，从 BeanDefinition 所属的 Map 里，拿出 Class 对象进行实例化，同时，如果有依赖关系，将递归调用 getBean 方法 —— 完成依赖注入。
+
+上面就是 Spring 低级容器（BeanFactory）的 IoC。
+
+至于高级容器 ApplicationContext，他包含了低级容器的功能，当他执行 refresh 模板方法的时候，将刷新整个容器的 Bean。同时其作为高级容器，包含了太多的功能。一句话，他不仅仅是 IoC。他支持不同信息源头，支持 BeanFactory 工具类，支持层级容器，支持访问文件资源，支持事件发布通知，支持接口回调等等。
+
+## 8.ApplicationContext通常的实现是什么？
+
+**FileSystemXmlApplicationContext** ：此容器从一个XML文件中加载beans的定义，XML Bean 配置文件的全路径名必须提供给它的构造函数。
+
+**ClassPathXmlApplicationContext**：此容器也从一个XML文件中加载beans的定义，这里，你需要正确设置classpath因为这个容器将在classpath里找bean配置。
+
+**WebXmlApplicationContext**：此容器加载一个XML文件，此文件定义了一个WEB应用的所有bean。
+
+## 9.什么是Spring的依赖注入？
+
+控制反转IoC是一个很大的概念，可以用不同的方式来实现。其主要实现方式有两种：依赖注入和依赖查找
+
+依赖注入：相对于IoC而言，依赖注入(DI)更加准确地描述了IoC的设计理念。所谓依赖注入（Dependency Injection），即组件之间的依赖关系由容器在应用系统运行期来决定，也就是由容器动态地将某种依赖关系的目标对象实例注入到应用系统中的各个关联的组件之中。组件不做定位查询，只提供普通的Java方法让容器去决定依赖关系。
+
+## 10.依赖注入的基本原则
+
+依赖注入的基本原则是：应用组件不应该负责查找资源或者其他依赖的协作对象。配置对象的工作应该由IoC容器负责，“查找资源”的逻辑应该从应用组件的代码中抽取出来，交给IoC容器负责。容器全权负责组件的装配，它会把符合依赖关系的对象通过属性（JavaBean中的setter）或者是构造器传递给需要的对象。
+
+## 11.依赖注入有什么优势
+
+依赖注入之所以更流行是因为它是一种更可取的方式：让容器全权负责依赖查询，受管组件只需要暴露JavaBean的setter方法或者带参数的构造器或者接口，使容器可以在初始化时组装对象的依赖关系。其与依赖查找方式相比，主要优势为：
+
+* 查找定位操作与应用代码完全无关。
+* 不依赖于容器的API，可以很容易地在任何容器以外使用应用对象。
+* 不需要特殊的接口，绝大多数对象可以做到完全不必依赖容器。
+## 12.有哪些不同类型的依赖注入实现方式？
+
+依赖注入是时下最流行的IoC实现方式，依赖注入分为接口注入（Interface Injection），Setter方法注入（Setter Injection）和构造器注入（Constructor Injection）三种方式。其中接口注入由于在灵活性和易用性比较差，现在从Spring4开始已被废弃。
+
+**构造器依赖注入**：构造器依赖注入通过容器触发一个类的构造器来实现的，该类有一系列参数，每个参数代表一个对其他类的依赖。
+
+**Setter方法注入**：Setter方法注入是容器通过调用无参构造器或无参static工厂 方法实例化bean之后，调用该bean的setter方法，即实现了基于setter的依赖注入。
+
+## 13.构造器依赖注入和 Setter方法注入的区别
+
+| **构造函数注入**   | **setter 注入**   | 
+|:----:|:----:|
+| 没有部分注入 | 有部分注入 | 
+| 不会覆盖 setter 属性 | 会覆盖 setter 属性 | 
+| 任意修改都会创建一个新实例 | 任意修改不会创建一个新实例 | 
+| 适用于设置很多属性 | 适用于设置少量属性 | 
+
+两种依赖方式都可以使用，构造器注入和Setter方法注入。最好的解决方案是用构造器参数实现强制依赖，setter方法实现可选依赖。
+
+# 三、Spring Beans
+
+## 1.什么是Spring beans？
+
+Spring beans 是那些形成Spring应用的主干的java对象。它们被Spring IOC容器初始化，装配，和管理。这些beans通过容器中配置的元数据创建。比如，以XML文件中 的形式定义。
+
+## 2.一个 Spring Bean 定义 包含什么？
+
+一个Spring Bean 的定义包含容器必知的所有配置元数据，包括如何创建一个bean，它的生命周期详情及它的依赖。
+
+## 3.如何给Spring 容器提供配置元数据？Spring有几种配置方式
+
+这里有三种重要的方法给Spring 容器提供配置元数据。
+
+* XML配置文件。
+* 基于注解的配置。
+* 基于java的配置。
+## 4.Spring配置文件包含了哪些信息
+
+Spring配置文件是个XML 文件，这个文件包含了类信息，描述了如何配置它们，以及如何相互调用。
+
+## 5.Spring基于xml注入bean的几种方式
+
+* Set方法注入；
+* 构造器注入：
+  * 通过index设置参数的位置；
+  * 通过type设置参数类型；
+* 静态工厂注入；
+* 实例工厂；
+## 6.你怎样定义类的作用域？
+
+当定义一个 在Spring里，我们还能给这个bean声明一个作用域。它可以通过bean 定义中的scope属性来定义。如，当Spring要在需要的时候每次生产一个新的bean实例，bean的scope属性被指定为prototype。另一方面，一个bean每次使用的时候必须返回同一个实例，这个bean的scope 属性 必须设为 singleton。
+
+## 7.解释Spring支持的几种bean的作用域
+
+Spring框架支持以下五种bean的作用域：
+
+* singleton : bean在每个Spring ioc 容器中只有一个实例。
+* prototype：一个bean的定义可以有多个实例。
+* request：每次http请求都会创建一个bean，该作用域仅在基于web的Spring ApplicationContext情形下有效。
+* session：在一个HTTP Session中，一个bean定义对应一个实例。该作用域仅在基于web的Spring ApplicationContext情形下有效。
+* global-session：在一个全局的HTTP Session中，一个bean定义对应一个实例。该作用域仅在基于web的Spring ApplicationContext情形下有效。
+
+注意： 缺省的Spring bean 的作用域是Singleton。使用 prototype 作用域需要慎重的思考，因为频繁创建和销毁 bean 会带来很大的性能开销。
+
+## 8.Spring框架中的单例bean是线程安全的吗？
+
+不是，Spring框架中的单例bean不是线程安全的。
+
+spring 中的 bean 默认是单例模式，spring 框架并没有对单例 bean 进行多线程的封装处理。
+
+实际上大部分时候 spring bean 无状态的（比如 dao 类），所有某种程度上来说 bean 也是安全的，但如果 bean 有状态的话（比如 view model 对象），那就要开发者自己去保证线程安全了，最简单的就是改变 bean 的作用域，把“singleton”变更为“prototype”，这样请求 bean 相当于 new Bean()了，所以就可以保证线程安全了。
+
+* 有状态就是有数据存储功能。
+* 无状态就是不会保存数据。
+## 9.Spring如何处理线程并发问题？
+
+在一般情况下，只有无状态的Bean才可以在多线程环境下共享，在Spring中，绝大部分Bean都可以声明为singleton作用域，因为Spring对一些Bean中非线程安全状态采用ThreadLocal进行处理，解决线程安全问题。
+
+ThreadLocal和线程同步机制都是为了解决多线程中相同变量的访问冲突问题。同步机制采用了“时间换空间”的方式，仅提供一份变量，不同的线程在访问前需要获取锁，没获得锁的线程则需要排队。而ThreadLocal采用了“空间换时间”的方式。
+
+ThreadLocal会为每一个线程提供一个独立的变量副本，从而隔离了多个线程对数据的访问冲突。因为每一个线程都拥有自己的变量副本，从而也就没有必要对该变量进行同步了。ThreadLocal提供了线程安全的共享对象，在编写多线程代码时，可以把不安全的变量封装进ThreadLocal。
+
+## 10.解释Spring框架中bean的生命周期
+
+在传统的Java应用中，bean的生命周期很简单。使用Java关键字new进行bean实例化，然后该bean就可以使用了。一旦该bean不再被使用，则由Java自动进行垃圾回收。相比之下，Spring容器中的bean的生命周期就显得相对复杂多了。正确理解Spring bean的生命周期非常重要，因为你或许要利用Spring提供的扩展点来自定义bean的创建过程。下图展示了bean装载到Spring应用上下文中的一个典型的生命周期过程。
+
+![图片](https://uploader.shimo.im/f/OLzLDTIeke4m5b1n.png!thumbnail)
+
+bean在Spring容器中从创建到销毁经历了若干阶段，每一阶段都可以针对Spring如何管理bean进行个性化定制。
+
+正如你所见，在bean准备就绪之前，bean工厂执行了若干启动步骤。
+
+我们对上图进行详细描述：
+
+Spring对bean进行实例化；
+
+Spring将值和bean的引用注入到bean对应的属性中；
+
+如果bean实现了BeanNameAware接口，Spring将bean的ID传递给setBean-Name()方法；
+
+如果bean实现了BeanFactoryAware接口，Spring将调用setBeanFactory()方法，将BeanFactory容器实例传入；
+
+如果bean实现了ApplicationContextAware接口，Spring将调用setApplicationContext()方法，将bean所在的应用上下文的引用传入进来；
+
+如果bean实现了BeanPostProcessor接口，Spring将调用它们的post-ProcessBeforeInitialization()方法；
+
+如果bean实现了InitializingBean接口，Spring将调用它们的after-PropertiesSet()方法。类似地，如果bean使用initmethod声明了初始化方法，该方法也会被调用；
+
+如果bean实现了BeanPostProcessor接口，Spring将调用它们的post-ProcessAfterInitialization()方法；
+
+此时，bean已经准备就绪，可以被应用程序使用了，它们将一直驻留在应用上下文中，直到该应用上下文被销毁；
+
+如果bean实现了DisposableBean接口，Spring将调用它的destroy()接口方法。同样，如果bean使用destroy-method声明了销毁方法，该方法也会被调用。
+
+现在你已经了解了如何创建和加载一个Spring容器。但是一个空的容器并没有太大的价值，在你把东西放进去之前，它里面什么都没有。为了从Spring的DI(依赖注入)中受益，我们必须将应用对象装配进Spring容器中。
+
+## 11.哪些是重要的bean生命周期方法？ 你能重载它们吗？
+
+有两个重要的bean 生命周期方法，第一个是setup ， 它是在容器加载bean的时候被调用。第二个方法是 teardown 它是在容器卸载类的时候被调用。
+
+bean 标签有两个重要的属性（init-method和destroy-method）。用它们你可以自己定制初始化和注销方法。它们也有相应的注解（@PostConstruct和@PreDestroy）。
+
+## 12.什么是Spring的内部bean？什么是Spring inner beans？
+
+在Spring框架中，当一个bean仅被用作另一个bean的属性时，它能被声明为一个内部bean。内部bean可以用setter注入“属性”和构造方法注入“构造参数”的方式来实现，内部bean通常是匿名的，它们的Scope一般是prototype。
+
+## 13.在 Spring中如何注入一个java集合？
+
+Spring提供以下几种集合的配置元素：
+
+* 类型用于注入一列值，允许有相同的值。
+* 类型用于注入一组值，不允许有相同的值。
+* 类型用于注入一组键值对，键和值都可以为任意类型。
+* 类型用于注入一组键值对，键和值都只能为String类型。
+## 14.什么是bean装配？
+
+装配，或bean 装配是指在Spring 容器中把bean组装到一起，前提是容器需要知道bean的依赖关系，如何通过依赖注入来把它们装配到一起。
+
+什么是bean的自动装配？
+
+在Spring框架中，在配置文件中设定bean的依赖关系是一个很好的机制，Spring 容器能够自动装配相互合作的bean，这意味着容器不需要和配置，能通过Bean工厂自动处理bean之间的协作。这意味着 Spring可以通过向Bean Factory中注入的方式自动搞定bean之间的依赖关系。自动装配可以设置在每个bean上，也可以设定在特定的bean上。
+
+## 15.解释不同方式的自动装配，spring 自动装配 bean 有哪些方式？
+
+在spring中，对象无需自己查找或创建与其关联的其他对象，由容器负责把需要相互协作的对象引用赋予各个对象，使用autowire来配置自动装载模式。
+
+在Spring框架xml配置中共有5种自动装配：
+
+* no：默认的方式是不进行自动装配的，通过手工设置ref属性来进行装配bean。
+* byName：通过bean的名称进行自动装配，如果一个bean的 property 与另一bean 的name 相同，就进行自动装配。
+* byType：通过参数的数据类型进行自动装配。
+* constructor：利用构造函数进行装配，并且构造函数的参数通过byType进行装配。
+* autodetect：自动探测，如果有构造方法，通过 construct的方式自动装配，否则使用 byType的方式自动装配。
+## 16.使用@Autowired注解自动装配的过程是怎样的？
+
+使用@Autowired注解来自动装配指定的bean。在使用@Autowired注解之前需要在Spring配置文件进行配置，<context:annotation-config />。
+
+在启动spring IoC时，容器自动装载了一个AutowiredAnnotationBeanPostProcessor后置处理器，当容器扫描到@Autowied、@Resource或@Inject时，就会在IoC容器自动查找需要的bean，并装配给该对象的属性。在使用@Autowired时，首先在容器中查询对应类型的bean：
+
+* 如果查询结果刚好为一个，就将该bean装配给@Autowired指定的数据；
+* 如果查询的结果不止一个，那么@Autowired会根据名称来查找；
+* 如果上述查找的结果为空，那么会抛出异常。解决方法时，使用required=false。
+## 17.自动装配有哪些局限性？
+
+自动装配的局限性是：
+
+* 重写：你仍需用 和 配置来定义依赖，意味着总要重写自动装配。
+* 基本数据类型：你不能自动装配简单的属性，如基本数据类型，String字符串，和类。
+* 模糊特性：自动装配不如显式装配精确，如果有可能，建议使用显式装配。
+## 18.你可以在Spring中注入一个null 和一个空字符串吗？
+
+可以。
+
+# 四、Spring注解
+
+## 1.什么是基于Java的Spring注解配置? 给一些注解的例子
+
+基于Java的配置，允许你在少量的Java注解的帮助下，进行你的大部分Spring配置而非通过XML文件。
+
+以@Configuration 注解为例，它用来标记类可以当做一个bean的定义，被Spring IOC容器使用。
+
+另一个例子是@Bean注解，它表示此方法将要返回一个对象，作为一个bean注册进Spring应用上下文。
+
+```
+@Configuration
+public class StudentConfig {
+    @Bean
+    public StudentBean myStudent() {
+        return new StudentBean();
+    }
+}
+```
+## 2.怎样开启注解装配？
+
+注解装配在默认情况下是不开启的，为了使用注解装配，我们必须在Spring配置文件中配置 <context:annotation-config/>元素。
+
+## 3.@Component, @Controller, @Repository, @Service 有何区别？
+
+* @Component：这将 java 类标记为 bean。它是任何 Spring 管理组件的通用构造型。spring 的组件扫描机制现在可以将其拾取并将其拉入应用程序环境中。
+* @Controller：这将一个类标记为 Spring Web MVC 控制器。标有它的 Bean 会自动导入到 IoC 容器中。
+* @Service：此注解是组件注解的特化。它不会对 @Component 注解提供任何其他行为。您可以在服务层类中使用 @Service 而不是 @Component，因为它以更好的方式指定了意图。
+* @Repository：这个注解是具有类似用途和功能的 @Component 注解的特化。它为 DAO 提供了额外的好处。它将 DAO 导入 IoC 容器，并使未经检查的异常有资格转换为 Spring DataAccessException。
+## 4.@Required 注解有什么作用
+
+这个注解表明bean的属性必须在配置的时候设置，通过一个bean定义的显式的属性值或通过自动装配，若@Required注解的bean属性未被设置，容器将抛出BeanInitializationException。示例：
+
+```
+public class Employee {
+    private String name;
+    @Required
+    public void setName(String name){
+        this.name=name;
+    }
+    public string getName(){
+        return name;
+    }
+}
+```
+## 5.@Autowired 注解有什么作用
+
+@Autowired默认是按照类型装配注入的，默认情况下它要求依赖对象必须存在（可以设置它required属性为false）。@Autowired 注解提供了更细粒度的控制，包括在何处以及如何完成自动装配。它的用法和@Required一样，修饰setter方法、构造器、属性或者具有任意名称和/或多个参数的PN方法。
+
+```
+public class Employee {
+    private String name;
+    @Autowired
+    public void setName(String name) {
+        this.name=name;
+    }
+    public string getName(){
+        return name;
+    }
+}
+```
+## 6.@Autowired和@Resource之间的区别
+
+@Autowired可用于：构造函数、成员变量、Setter方法
+
+@Autowired和@Resource之间的区别
+
+* @Autowired默认是按照类型装配注入的，默认情况下它要求依赖对象必须存在（可以设置它required属性为false）。
+* @Resource默认是按照名称来装配注入的，只有当找不到与名称匹配的bean才会按照类型来装配注入。
+## 7.@Qualifier 注解有什么作用
+
+当您创建多个相同类型的 bean 并希望仅使用属性装配其中一个 bean 时，您可以使用@Qualifier 注解和 @Autowired 通过指定应该装配哪个确切的 bean 来消除歧义。
+
+## 8.@RequestMapping 注解有什么用？
+
+@RequestMapping 注解用于将特定 HTTP 请求方法映射到将处理相应请求的控制器中的特定类/方法。此注释可应用于两个级别：
+
+* 类级别：映射请求的 URL
+* 方法级别：映射 URL 以及 HTTP 请求方法
+# 五、Spring数据访问
+
+## 1.解释对象/关系映射集成模块
+
+Spring 通过提供ORM模块，支持我们在直接JDBC之上使用一个对象/关系映射映射(ORM)工具，Spring 支持集成主流的ORM框架，如Hiberate，JDO和 iBATIS，JPA，TopLink，JDO，OJB 。Spring的事务管理同样支持以上所有ORM框架及JDBC。
+
+## 2.在Spring框架中如何更有效地使用JDBC？
+
+使用Spring JDBC 框架，资源管理和错误处理的代价都会被减轻。所以开发者只需写statements 和 queries从数据存取数据，JDBC也可以在Spring框架提供的模板类的帮助下更有效地被使用，这个模板叫JdbcTemplate
+
+## 3.解释JDBC抽象和DAO模块
+
+通过使用JDBC抽象和DAO模块，保证数据库代码的简洁，并能避免数据库资源错误关闭导致的问题，它在各种不同的数据库的错误信息之上，提供了一个统一的异常访问层。它还利用Spring的AOP 模块给Spring应用中的对象提供事务管理服务。
+
+## 4.spring DAO 有什么用？
+
+Spring DAO（数据访问对象） 使得 JDBC，Hibernate 或 JDO 这样的数据访问技术更容易以一种统一的方式工作。这使得用户容易在持久性技术之间切换。它还允许您在编写代码时，无需考虑捕获每种技术不同的异常。
+
+## 5.spring JDBC API 中存在哪些类？
+
+* JdbcTemplate
+* SimpleJdbcTemplate
+* NamedParameterJdbcTemplate
+* SimpleJdbcInsert
+* SimpleJdbcCall
+## 6.JdbcTemplate是什么
+
+JdbcTemplate 类提供了很多便利的方法解决诸如把数据库数据转变成基本数据类型或对象，执行写好的或可调用的数据库操作语句，提供自定义的数据错误处理。
+
+## 7.使用Spring通过什么方式访问Hibernate？使用 Spring 访问 Hibernate 的方法有哪些？
+
+在Spring中有两种方式访问Hibernate：
+
+使用 Hibernate 模板和回调进行控制反转
+
+扩展 HibernateDAOSupport 并应用 AOP 拦截器节点
+
+## 8.如何通过HibernateDaoSupport将Spring和Hibernate结合起来？
+
+用Spring的 SessionFactory 调用 LocalSessionFactory。集成过程分三步：
+
+* 配置the Hibernate SessionFactory
+* 继承HibernateDaoSupport实现一个DAO
+* 在AOP支持的事务中装配
+## 9.Spring支持的事务管理类型， spring 事务实现方式有哪些？
+
+Spring支持两种类型的事务管理：
+
+**编程式事务管理**：这意味你通过编程的方式管理事务，给你带来极大的灵活性，但是难维护。
+
+**声明式事务管理**：这意味着你可以将业务代码和事务管理分离，你只需用注解和XML配置来管理事务。
+
+## 10.Spring事务的实现方式和实现原理
+
+Spring事务的本质其实就是数据库对事务的支持，没有数据库的事务支持，spring是无法提供事务功能的。真正的数据库层的事务提交和回滚是通过binlog或者redo log实现的。
+
+## 11.说一下Spring的事务传播行为
+
+spring事务的传播行为说的是，当多个事务同时存在的时候，spring如何处理这些事务的行为。
+
+>① PROPAGATION_REQUIRED：如果当前没有事务，就创建一个新事务，如果当前存在事务，就加入该事务，该设置是最常用的设置。
+>② PROPAGATION_SUPPORTS：支持当前事务，如果当前存在事务，就加入该事务，如果当前不存在事务，就以非事务执行。
+>③ PROPAGATION_MANDATORY：支持当前事务，如果当前存在事务，就加入该事务，如果当前不存在事务，就抛出异常。
+>④ PROPAGATION_REQUIRES_NEW：创建新事务，无论当前存不存在事务，都创建新事务。
+>⑤ PROPAGATION_NOT_SUPPORTED：以非事务方式执行操作，如果当前存在事务，就把当前事务挂起。
+>⑥ PROPAGATION_NEVER：以非事务方式执行，如果当前存在事务，则抛出异常。
+>⑦ PROPAGATION_NESTED：如果当前存在事务，则在嵌套事务内执行。如果当前没有事务，则按REQUIRED属性执行。
+## 12.说一下 spring 的事务隔离？
+
+spring 有五大隔离级别，默认值为 ISOLATION_DEFAULT（使用数据库的设置），其他四个隔离级别和数据库的隔离级别一致：
+
+1. ISOLATION_DEFAULT：用底层数据库的设置隔离级别，数据库设置的是什么我就用什么；
+2. ISOLATION_READ_UNCOMMITTED：未提交读，最低隔离级别、事务未提交前，就可被其他事务读取（会出现幻读、脏读、不可重复读）；
+3. ISOLATION_READ_COMMITTED：提交读，一个事务提交后才能被其他事务读取到（会造成幻读、不可重复读），SQL server 的默认级别；
+4. ISOLATION_REPEATABLE_READ：可重复读，保证多次读取同一个数据时，其值都和事务开始时候的内容是一致，禁止读取到别的事务未提交的数据（会造成幻读），MySQL 的默认级别；
+5. ISOLATION_SERIALIZABLE：序列化，代价最高最可靠的隔离级别，该隔离级别能防止脏读、不可重复读、幻读。
+
+**脏读 **：表示一个事务能够读取另一个事务中还未提交的数据。比如，某个事务尝试插入记录 A，此时该事务还未提交，然后另一个事务尝试读取到了记录 A。
+
+**不可重复读** ：是指在一个事务内，多次读同一数据。
+
+**幻读** ：指同一个事务内多次查询返回的结果集不一样。比如同一个事务 A 第一次查询时候有 n 条记录，但是第二次同等条件下查询却有 n+1 条记录，这就好像产生了幻觉。发生幻读的原因也是另外一个事务新增或者删除或者修改了第一个事务结果集里面的数据，同一个记录的数据内容被修改了，所有数据行的记录就变多或者变少了。
+
+## 13.Spring框架的事务管理有哪些优点？
+
+为不同的事务API 如 JTA，JDBC，Hibernate，JPA 和JDO，提供一个不变的编程模式。
+
+为编程式事务管理提供了一套简单的API而不是一些复杂的事务API
+
+支持声明式事务管理。
+
+和Spring各种数据访问抽象层很好得集成。
+
+## 14.你更倾向用那种事务管理类型？
+
+大多数Spring框架的用户选择声明式事务管理，因为它对应用代码的影响最小，因此更符合一个无侵入的轻量级容器的思想。声明式事务管理要优于编程式事务管理，虽然比编程式事务管理（这种方式允许你通过代码控制事务）少了一点灵活性。唯一不足地方是，最细粒度只能作用到方法级别，无法做到像编程式事务那样可以作用到代码块级别。
+
+# 六、Spring面向切面编程(AOP)
+
+## 1.什么是AOP
+
+OOP(Object-Oriented Programming)面向对象编程，允许开发者定义纵向的关系，但并适用于定义横向的关系，导致了大量代码的重复，而不利于各个模块的重用。
+
+AOP(Aspect-Oriented Programming)，一般称为面向切面编程，作为面向对象的一种补充，用于将那些与业务无关，但却对多个对象产生影响的公共行为和逻辑，抽取并封装为一个可重用的模块，这个模块被命名为“切面”（Aspect），减少系统中的重复代码，降低了模块间的耦合度，同时提高了系统的可维护性。可用于权限认证、日志、事务处理等。
+
+## 2.Spring AOP and AspectJ AOP 有什么区别？AOP 有哪些实现方式？
+
+AOP实现的关键在于 代理模式，AOP代理主要分为静态代理和动态代理。静态代理的代表为AspectJ；动态代理则以Spring AOP为代表。
+
+* （1）AspectJ是静态代理的增强，所谓静态代理，就是AOP框架会在编译阶段生成AOP代理类，因此也称为编译时增强，他会在编译阶段将AspectJ(切面)织入到Java字节码中，运行的时候就是增强之后的AOP对象。
+* （2）Spring AOP使用的动态代理，所谓的动态代理就是说AOP框架不会去修改字节码，而是每次运行时在内存中临时为方法生成一个AOP对象，这个AOP对象包含了目标对象的全部方法，并且在特定的切点做了增强处理，并回调原对象的方法。
+## 3.JDK动态代理和CGLIB动态代理的区别
+
+Spring AOP中的动态代理主要有两种方式，JDK动态代理和CGLIB动态代理：
+
+JDK动态代理只提供接口的代理，不支持类的代理。核心InvocationHandler接口和Proxy类，InvocationHandler 通过invoke()方法反射来调用目标类中的代码，动态地将横切逻辑和业务编织在一起；接着，Proxy利用 InvocationHandler动态创建一个符合某一接口的的实例, 生成目标类的代理对象。
+
+如果代理类没有实现 InvocationHandler 接口，那么Spring AOP会选择使用CGLIB来动态代理目标类。CGLIB（Code Generation Library），是一个代码生成的类库，可以在运行时动态的生成指定类的一个子类对象，并覆盖其中特定方法并添加增强代码，从而实现AOP。CGLIB是通过继承的方式做的动态代理，因此如果某个类被标记为final，那么它是无法使用CGLIB做动态代理的。
+
+静态代理与动态代理区别在于生成AOP代理对象的时机不同，相对来说AspectJ的静态代理方式具有更好的性能，但是AspectJ需要特定的编译器进行处理，而Spring AOP则无需特定的编译器处理。
+
+>InvocationHandler 的 invoke(Object proxy,Method method,Object[] args)：proxy是最终生成的代理实例; method 是被代理目标实例的某个具体方法; args 是被代理目标实例某个方法的具体入参, 在方法反射调用时使用。
+## 4.如何理解 Spring 中的代理？
+
+将 Advice 应用于目标对象后创建的对象称为代理。在客户端对象的情况下，目标对象和代理对象是相同的。
+
+Advice + Target Object = Proxy
+
+## 5.解释一下Spring AOP里面的几个名词
+
+1. 切面（Aspect）：切面是通知和切点的结合。通知和切点共同定义了切面的全部内容。 在Spring AOP中，切面可以使用通用类（基于模式的风格） 或者在普通类中以 @AspectJ 注解来实现。
+2. 连接点（Join point）：指方法，在Spring AOP中，一个连接点 总是 代表一个方法的执行。 应用可能有数以千计的时机应用通知。这些时机被称为连接点。连接点是在应用执行过程中能够插入切面的一个点。这个点可以是调用方法时、抛出异常时、甚至修改一个字段时。切面代码可以利用这些点插入到应用的正常流程之中，并添加新的行为。
+3. 通知（Advice）：在AOP术语中，切面的工作被称为通知。
+4. 切入点（Pointcut）：切点的定义会匹配通知所要织入的一个或多个连接点。我们通常使用明确的类和方法名称，或是利用正则表达式定义所匹配的类和方法名称来指定这些切点。
+5. 引入（Introduction）：引入允许我们向现有类添加新方法或属性。
+6. 目标对象（Target Object）： 被一个或者多个切面（aspect）所通知（advise）的对象。它通常是一个代理对象。也有人把它叫做 被通知（adviced） 对象。 既然Spring AOP是通过运行时代理实现的，这个对象永远是一个 被代理（proxied） 对象。
+7. 织入（Weaving）：织入是把切面应用到目标对象并创建新的代理对象的过程。在目标对象的生命周期里有多少个点可以进行织入：
+* 编译期：切面在目标类编译时被织入。AspectJ的织入编译器是以这种方式织入切面的。
+* 类加载期：切面在目标类加载到JVM时被织入。需要特殊的类加载器，它可以在目标类被引入应用之前增强该目标类的字节码。AspectJ5的加载时织入就支持以这种方式织入切面。
+* 运行期：切面在应用运行的某个时刻被织入。一般情况下，在织入切面时，AOP容器会为目标对象动态地创建一个代理对象。SpringAOP就是以这种方式织入切面。
+## 6.Spring在运行时通知对象
+
+通过在代理类中包裹切面，Spring在运行期把切面织入到Spring管理的bean中。代理封装了目标类，并拦截被通知方法的调用，再把调用转发给真正的目标bean。当代理拦截到方法调用时，在调用目标bean方法之前，会执行切面逻辑。
+
+直到应用需要被代理的bean时，Spring才创建代理对象。如果使用的是ApplicationContext的话，在ApplicationContext从BeanFactory中加载所有bean的时候，Spring才会创建被代理的对象。因为Spring运行时才创建代理对象，所以我们不需要特殊的编译器来织入SpringAOP的切面。
+
+## 7.Spring只支持方法级别的连接点
+
+因为Spring基于动态代理，所以Spring只支持方法连接点。Spring缺少对字段连接点的支持，而且它不支持构造器连接点。方法之外的连接点拦截功能，我们可以利用Aspect来补充。
+
+## 8.在Spring AOP 中，关注点和横切关注的区别是什么？在 spring aop 中 concern 和 cross-cutting concern 的不同之处
+
+关注点（concern）是应用中一个模块的行为，一个关注点可能会被定义成一个我们想实现的一个功能。
+
+横切关注点（cross-cutting concern）是一个关注点，此关注点是整个应用都会使用的功能，并影响整个应用，比如日志，安全和数据传输，几乎应用的每个模块都需要的功能。因此这些都属于横切关注点。
+
+## 9.Spring通知有哪些类型？
+
+在AOP术语中，切面的工作被称为通知，实际上是程序执行时要通过SpringAOP框架触发的代码段。
+
+Spring切面可以应用5种类型的通知：
+
+1. 前置通知（Before）：在目标方法被调用之前调用通知功能；
+2. 后置通知（After）：在目标方法完成之后调用通知，此时不会关心方法的输出是什么；
+3. 返回通知（After-returning ）：在目标方法成功执行之后调用通知；
+4. 异常通知（After-throwing）：在目标方法抛出异常后调用通知；
+5. 环绕通知（Around）：通知包裹了被通知的方法，在被通知的方法调用之前和调用之后执行自定义的行为。
+>同一个aspect，不同advice的执行顺序：
+>①没有异常情况下的执行顺序：
+>around before advice
+>before advice
+>target method 执行
+>around after advice
+>after advice
+>afterReturning
+>②有异常情况下的执行顺序：
+>around before advice
+>before advice
+>target method 执行
+>around after advice
+>after advice
+>afterThrowing:异常发生
+>java.lang.RuntimeException: 异常发生
+## 10.什么是切面 Aspect？
+
+aspect 由 pointcount 和 advice 组成，切面是通知和切点的结合。 它既包含了横切逻辑的定义, 也包括了连接点的定义. Spring AOP 就是负责实施切面的框架, 它将切面所定义的横切逻辑编织到切面所指定的连接点中.
+
+AOP 的工作重心在于如何将增强编织目标对象的连接点上, 这里包含两个工作:
+
+* 如何通过 pointcut 和 advice 定位到特定的 joinpoint 上
+* 如何在 advice 中编写切面代码.
+
+可以简单地认为, 使用 @Aspect 注解的类就是切面.
+
+![图片](https://uploader.shimo.im/f/AW9Z55d2zhwzqWWh.png!thumbnail)
+
+## 11.解释基于XML Schema方式的切面实现
+
+在这种情况下，切面由常规类以及基于XML的配置实现。
+
+## 12.解释基于注解的切面实现
+
+在这种情况下(基于@AspectJ的实现)，涉及到的切面声明的风格与带有java5标注的普通java类一致。
+
+## 13.有几种不同类型的自动代理？
+
+* BeanNameAutoProxyCreator
+* DefaultAdvisorAutoProxyCreator
+* Metadata autoproxying
+
+---
+
+# 一、概述
+
+## 1.什么是Spring MVC？简单介绍下你对Spring MVC的理解？
+
+Spring MVC是一个基于Java的实现了MVC设计模式的请求驱动类型的轻量级Web框架，通过把模型-视图-控制器分离，将web层进行职责解耦，把复杂的web应用分成逻辑清晰的几部分，简化开发，减少出错，方便组内开发人员之间的配合。
+
+## 2.Spring MVC的优点
+
+1. 可以支持各种视图技术,而不仅仅局限于JSP；
+2. 与Spring框架集成（如IoC容器、AOP等）；
+3. 清晰的角色分配：前端控制器(dispatcherServlet) , 请求到处理器映射（handlerMapping), 处理器适配器（HandlerAdapter), 视图解析器（ViewResolver）。
+4. 支持各种请求资源的映射策略。
+# 二、核心组件
+
+## 1.Spring MVC的主要组件？
+
+（1）前端控制器 DispatcherServlet（不需要程序员开发）
+
+作用：接收请求、响应结果，相当于转发器，有了DispatcherServlet 就减少了其它组件之间的耦合度。
+
+（2）处理器映射器HandlerMapping（不需要程序员开发）
+
+作用：根据请求的URL来查找Handler
+
+（3）处理器适配器HandlerAdapter
+
+注意：在编写Handler的时候要按照HandlerAdapter要求的规则去编写，这样适配器HandlerAdapter才可以正确的去执行Handler。
+
+（4）处理器Handler（需要程序员开发）
+
+（5）视图解析器 ViewResolver（不需要程序员开发）
+
+作用：进行视图的解析，根据视图逻辑名解析成真正的视图（view）
+
+（6）视图View（需要程序员开发jsp）
+
+View是一个接口， 它的实现类支持不同的视图类型（jsp，freemarker，pdf等等）
+
+## 2.什么是DispatcherServlet
+
+Spring的MVC框架是围绕DispatcherServlet来设计的，它用来处理所有的HTTP请求和响应。
+
+## 3.什么是Spring MVC框架的控制器？
+
+控制器提供一个访问应用程序的行为，此行为通常通过服务接口实现。控制器解析用户输入并将其转换为一个由视图呈现给用户的模型。Spring用一个非常抽象的方式实现了一个控制层，允许用户创建多种用途的控制器。
+
+## 4.Spring MVC的控制器是不是单例模式,如果是,有什么问题,怎么解决？
+
+答：是单例模式,所以在多线程访问的时候有线程安全问题,不要用同步,会影响性能的,解决方案是在控制器里面不能写字段。
+
+# 三、工作原理
+
+## 1.请描述Spring MVC的工作流程？描述一下 DispatcherServlet 的工作流程？
+
+1. 用户发送请求至前端控制器DispatcherServlet；
+2.  DispatcherServlet收到请求后，调用HandlerMapping处理器映射器，请求获取Handle；
+3. 处理器映射器根据请求url找到具体的处理器，生成处理器对象及处理器拦截器(如果有则生成)一并返回给DispatcherServlet；
+4. DispatcherServlet 调用 HandlerAdapter处理器适配器；
+5. HandlerAdapter 经过适配调用 具体处理器(Handler，也叫后端控制器)；
+6. Handler执行完成返回ModelAndView；
+7. HandlerAdapter将Handler执行结果ModelAndView返回给DispatcherServlet；
+8. DispatcherServlet将ModelAndView传给ViewResolver视图解析器进行解析；
+9. ViewResolver解析后返回具体View；
+10. DispatcherServlet对View进行渲染视图（即将模型数据填充至视图中）
+11. DispatcherServlet响应用户。
+
+![图片](https://uploader.shimo.im/f/ES7HZ7cUrwoMmv1t.png!thumbnail)
+
+# 四、MVC框架
+
+## 1.MVC是什么？MVC设计模式的好处有哪些
+
+mvc是一种设计模式（设计模式就是日常开发中编写代码的一种好的方法和经验的总结）。模型（model）-视图（view）-控制器（controller），三层架构的设计模式。用于实现前端页面的展现与后端业务数据处理的分离。
+
+mvc设计模式的好处
+
+1. 分层设计，实现了业务系统各个组件之间的解耦，有利于业务系统的可扩展性，可维护性。
+2. 有利于系统的并行开发，提升开发效率。
+# 五、常用注解
+
+## 1.注解原理是什么
+
+注解本质是一个继承了Annotation的特殊接口，其具体实现类是Java运行时生成的动态代理类。我们通过反射获取注解时，返回的是Java运行时生成的动态代理对象。通过代理对象调用自定义注解的方法，会最终调用AnnotationInvocationHandler的invoke方法。该方法会从memberValues这个Map中索引出对应的值。而memberValues的来源是Java常量池。
+
+## 2.Spring MVC常用的注解有哪些？
+
+* @RequestMapping：用于处理请求 url 映射的注解，可用于类或方法上。用于类上，则表示类中的所有响应请求的方法都是以该地址作为父路径。
+* @RequestBody：注解实现接收http请求的json数据，将json转换为java对象。
+* @ResponseBody：注解实现将conreoller方法返回对象转化为json对象响应给客户。
+## 3.SpingMvc中的控制器的注解一般用哪个,有没有别的注解可以替代？
+
+答：一般用@Controller注解,也可以使用@RestController,@RestController注解相当于@ResponseBody ＋ @Controller,表示是表现层,除此之外，一般不用别的注解代替。
+
+## 4.@Controller注解的作用
+
+在Spring MVC 中，控制器Controller 负责处理由DispatcherServlet 分发的请求，它把用户请求的数据经过业务处理层处理之后封装成一个Model ，然后再把该Model 返回给对应的View 进行展示。在Spring MVC 中提供了一个非常简便的定义Controller 的方法，你无需继承特定的类或实现特定的接口，只需使用@Controller 标记一个类是Controller ，然后使用@RequestMapping 和@RequestParam 等一些注解用以定义URL 请求和Controller 方法之间的映射，这样的Controller 就能被外界访问到。此外Controller 不会直接依赖于HttpServletRequest 和HttpServletResponse 等HttpServlet 对象，它们可以通过Controller 的方法参数灵活的获取到。
+
+@Controller 用于标记在一个类上，使用它标记的类就是一个Spring MVC Controller 对象。分发处理器将会扫描使用了该注解的类的方法，并检测该方法是否使用了@RequestMapping 注解。@Controller 只是定义了一个控制器类，而使用@RequestMapping 注解的方法才是真正处理请求的处理器。单单使用@Controller 标记在一个类上还不能真正意义上的说它就是Spring MVC 的一个控制器类，因为这个时候Spring 还不认识它。那么要如何做Spring 才能认识它呢？这个时候就需要我们把这个控制器类交给Spring 来管理。有两种方式：
+
+* 在Spring MVC 的配置文件中定义MyController 的bean 对象。
+* 在Spring MVC 的配置文件中告诉Spring 该到哪里去找标记为@Controller 的Controller 控制器。
+## 5.@RequestMapping注解的作用
+
+RequestMapping是一个用来处理请求地址映射的注解，可用于类或方法上。用于类上，表示类中的所有响应请求的方法都是以该地址作为父路径。
+
+RequestMapping注解有六个属性，下面我们把她分成三类进行说明（下面有相应示例）。
+
+**value， method**
+
+* value： 指定请求的实际地址，指定的地址可以是URI Template 模式（后面将会说明）；
+* method： 指定请求的method类型， GET、POST、PUT、DELETE等；
+
+**consumes，produces**
+
+* consumes： 指定处理请求的提交内容类型（Content-Type），例如application/json, text/html;
+* produces: 指定返回的内容类型，仅当request请求头中的(Accept)类型中包含该指定类型才返回；
+
+**params，headers**
+
+* params： 指定request中必须包含某些参数值是，才让该方法处理。
+* headers： 指定request中必须包含某些指定的header值，才能让该方法处理请求。
+## 6.@ResponseBody注解的作用
+
+* 作用： 该注解用于将Controller的方法返回的对象，通过适当的HttpMessageConverter转换为指定格式后，写入到Response对象的body数据区。
+* 使用时机：返回的数据不是html标签的页面，而是其他某种格式的数据时（如json、xml等）使用；
+## 7.@PathVariable和@RequestParam的区别
+
+请求路径上有个id的变量值，可以通过@PathVariable来获取 @RequestMapping(value = “/page/{id}”, method = RequestMethod.GET)
+
+@RequestParam用来获得静态的URL请求入参 spring注解时action里用到。
+
+# 六、其他
+
+## 1.Spring MVC与Struts2区别
+
+**相同点**
+
+都是基于mvc的表现层框架，都用于web项目的开发。
+
+**不同点**
+
+1. 前端控制器不一样。Spring MVC的前端控制器是servlet：DispatcherServlet。struts2的前端控制器是filter：StrutsPreparedAndExcutorFilter。
+2. 请求参数的接收方式不一样。Spring MVC是使用方法的形参接收请求的参数，基于方法的开发，线程安全，可以设计为单例或者多例的开发，推荐使用单例模式的开发（执行效率更高），默认就是单例开发模式。struts2是通过类的成员变量接收请求的参数，是基于类的开发，线程不安全，只能设计为多例的开发。
+3. Struts采用值栈存储请求和响应的数据，通过OGNL存取数据，Spring MVC通过参数解析器是将request请求内容解析，并给方法形参赋值，将数据和视图封装成ModelAndView对象，最后又将ModelAndView中的模型数据通过reques域传输到页面。Jsp视图解析器默认使用jstl。
+4. 与spring整合不一样。Spring MVC是spring框架的一部分，不需要整合。在企业项目中，Spring MVC使用更多一些。
+## 2.Spring MVC怎么样设定重定向和转发的？
+
+* 转发：在返回值前面加"forward:"，譬如"forward:user.do?name=method4"
+* 重定向：在返回值前面加"redirect:"，譬如"redirect:http://www.baidu.com"
+## 3.Spring MVC怎么和AJAX相互调用的？
+
+通过Jackson框架就可以把Java里面的对象直接转化成Js可以识别的Json对象。具体步骤如下 ：
+
+1. 加入Jackson.jar
+2. 在配置文件中配置json的映射
+3. 在接受Ajax方法里面可以直接返回Object,List等,但方法前面要加上@ResponseBody注解。
+## 4.如何解决POST请求中文乱码问题，GET的又如何处理呢？
+
+**（1）解决post请求乱码问题：**
+
+在web.xml中配置一个CharacterEncodingFilter过滤器，设置成utf-8；
+
+```
+<filter>
+    <filter-name>CharacterEncodingFilter</filter-name>
+    <filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
+    <init-param>
+        <param-name>encoding</param-name>
+        <param-value>utf-8</param-value>
+    </init-param>
+</filter>
+<filter-mapping>
+    <filter-name>CharacterEncodingFilter</filter-name>
+    <url-pattern>/*</url-pattern>
+</filter-mapping>
+```
+**（2）get请求中文参数出现乱码解决方法有两个：**
+①修改tomcat配置文件添加编码与工程编码一致，如下：
+
+```
+<ConnectorURIEncoding="utf-8" connectionTimeout="20000" port="8080" protocol="HTTP/1.1" redirectPort="8443"/>
+```
+②另外一种方法对参数进行重新编码：
+```
+String userName = new String(request.getParamter(“userName”).getBytes(“ISO8859-1”),“utf-8”)
+```
+ISO8859-1是tomcat默认编码，需要将tomcat编码后的内容按utf-8编码。
+## 5.Spring MVC的异常处理？
+
+答：可以将异常抛给Spring框架，由Spring框架来处理；我们只需要配置简单的异常处理器，在异常处理器中添视图页面即可。
+
+## 6.如果在拦截请求中，我想拦截get方式提交的方法,怎么配置
+
+答：可以在@RequestMapping注解里面加上method=RequestMethod.GET。
+
+## 7.怎样在方法里面得到Request,或者Session？
+
+答：直接在方法的形参中声明request,Spring MVC就自动把request对象传入。
+
+## 8.如果想在拦截的方法里面得到从前台传入的参数,怎么得到？
+
+答：直接在形参里面声明这个参数就可以,但必须名字和传过来的参数一样。
+
+## 9.如果前台有很多个参数传入,并且这些参数都是一个对象的,那么怎么样快速得到这个对象？
+
+答：直接在方法中声明这个对象,Spring MVC就自动会把属性赋值到这个对象里面。
+
+## 10.Spring MVC中函数的返回值是什么？
+
+答：返回值可以有很多类型,有String, ModelAndView。ModelAndView类把视图和数据都合并的一起的，但一般用String比较好。
+
+## 11.Spring MVC用什么对象从后台向前台传递数据的？
+
+答：通过ModelMap对象,可以在这个对象里面调用put方法,把对象加到里面,前台就可以通过el表达式拿到。
+
+## 12.怎么样把ModelMap里面的数据放入Session里面？
+
+答：可以在类上面加上@SessionAttributes注解,里面包含的字符串就是要放入session里面的key。
+
+## 13.Spring MVC里面拦截器是怎么写的
+
+有两种写法,一种是实现HandlerInterceptor接口，另外一种是继承适配器类，接着在接口方法当中，实现处理逻辑；然后在Spring MVC的配置文件中配置拦截器即可：
+
+```
+<!-- 配置Spring MVC的拦截器 -->
+<mvc:interceptors>
+    <!-- 配置一个拦截器的Bean就可以了 默认是对所有请求都拦截 -->
+    <bean id="myInterceptor" class="com.zwp.action.MyHandlerInterceptor"></bean>
+    <!-- 只针对部分请求拦截 -->
+    <mvc:interceptor>
+       <mvc:mapping path="/modelMap.do" />
+       <bean class="com.zwp.action.MyHandlerInterceptorAdapter" />
+    </mvc:interceptor>
+</mvc:interceptors>
+```
+## 14.介绍一下 WebApplicationContext
+
+WebApplicationContext 继承了ApplicationContext 并增加了一些WEB应用必备的特有功能，它不同于一般的ApplicationContext ，因为它能处理主题，并找到被关联的servlet。
+
+---
+
+# 一、Linux 概述
+
+## 1.什么是Linux
+
+Linux是一套免费使用和自由传播的类Unix操作系统，是一个基于POSIX和Unix的多用户、多任务、支持多线程和多CPU的操作系统。它能运行主要的Unix工具软件、应用程序和网络协议。它支持32位和64位硬件。Linux继承了Unix以网络为核心的设计思想，是一个性能稳定的多用户网络操作系统。
+
+## 2.Unix和Linux有什么区别？
+
+Linux和Unix都是功能强大的操作系统，都是应用广泛的服务器操作系统，有很多相似之处，甚至有一部分人错误地认为Unix和Linux操作系统是一样的，然而，事实并非如此，以下是两者的区别。
+
+* 开源性：Linux是一款开源操作系统，不需要付费，即可使用；Unix是一款对源码实行知识产权保护的传统商业软件，使用需要付费授权使用。
+* 跨平台性：Linux操作系统具有良好的跨平台性能，可运行在多种硬件平台上；Unix操作系统跨平台性能较弱，大多需与硬件配套使用。
+* 可视化界面：Linux除了进行命令行操作，还有窗体管理系统；Unix只是命令行下的系统。
+* 硬件环境：Linux操作系统对硬件的要求较低，安装方法更易掌握；Unix对硬件要求比较苛刻，按照难度较大。
+* 用户群体：Linux的用户群体很广泛，个人和企业均可使用；Unix的用户群体比较窄，多是安全性要求高的大型企业使用，如银行、电信部门等，或者Unix硬件厂商使用，如Sun等。相比于Unix操作系统，Linux操作系统更受广大计算机爱好者的喜爱，主要原因是Linux操作系统具有Unix操作系统的全部功能，并且能够在普通PC计算机上实现全部的Unix特性，开源免费的特性，更容易普及使用！
+## 3.什么是 Linux 内核？
+
+Linux 系统的核心是内核。内核控制着计算机系统上的所有硬件和软件，在必要时分配硬件，并根据需要执行软件。
+
+* 系统内存管理
+* 应用程序管理
+* 硬件设备管理
+* 文件系统管理
+## 4.Linux的基本组件是什么？
+
+就像任何其他典型的操作系统一样，Linux拥有所有这些组件：内核，shell和GUI，系统实用程序和应用程序。Linux比其他操作系统更具优势的是每个方面都附带其他功能，所有代码都可以免费下载。
+
+## 5.Linux 的体系结构
+
+从大的方面讲，Linux 体系结构可以分为两块：
+
+![图片](https://uploader.shimo.im/f/WD0ia1rLk4oHXHQO.png!thumbnail)
+
+* 用户空间(User Space) ：用户空间又包括用户的应用程序(User Applications)、C 库(C Library) 。
+* 内核空间(Kernel Space) ：内核空间又包括系统调用接口(System Call Interface)、内核(Kernel)、平台架构相关的代码(Architecture-Dependent Kernel Code) 。
+
+为什么 Linux 体系结构要分为用户空间和内核空间的原因？
+
+* 现代 CPU 实现了不同的工作模式，不同模式下 CPU 可以执行的指令和访问的寄存器不同。
+* Linux 从 CPU 的角度出发，为了保护内核的安全，把系统分成了两部分。
+
+用户空间和内核空间是程序执行的两种不同的状态，我们可以通过两种方式完成用户空间到内核空间的转移：1）系统调用；2）硬件中断。
+
+## 6.BASH和DOS之间的基本区别是什么？
+
+BASH和DOS控制台之间的主要区别在于3个方面：
+
+* BASH命令区分大小写，而DOS命令则不区分;
+* 在BASH下，/ character是目录分隔符，\作为转义字符。在DOS下，/用作命令参数分隔符，\是目录分隔符
+* DOS遵循命名文件中的约定，即8个字符的文件名后跟一个点，扩展名为3个字符。BASH没有遵循这样的惯例。
+## 7.Linux 开机启动过程？
+
+了解即可。
+
+1. 主机加电自检，加载 BIOS 硬件信息。
+2. 读取 MBR 的引导文件(GRUB、LILO)。
+3. 引导 Linux 内核。
+4. 运行第一个进程 init (进程号永远为 1 )。
+5. 进入相应的运行级别。
+6. 运行终端，输入用户名和密码。
+## 8.Linux系统缺省的运行级别？
+
+1. 关机。
+2. 单机用户模式。
+3. 字符界面的多用户模式(不支持网络)。
+4. 字符界面的多用户模式。
+5. 未分配使用。
+6. 图形界面的多用户模式。
+7. 重启。
+## 9.Linux 使用的进程间通信方式？
+
+>了解即可，不需要太深入。
+* 管道(pipe)、流管道(s_pipe)、有名管道(FIFO)。
+* 信号(signal) 。
+* 消息队列。
+* 共享内存。
+* 信号量。
+* 套接字(socket) 。
+## 10.Linux 有哪些系统日志文件？
+
+比较重要的是 /var/log/messages 日志文件。
+
+>该日志文件是许多进程日志文件的汇总，从该文件可以看出任何入侵企图或成功的入侵。
+>另外，如果胖友的系统里有 ELK 日志集中收集，它也会被收集进去。
+## 11.Linux系统安装多个桌面环境有帮助吗？
+
+通常，一个桌面环境，如KDE或Gnome，足以在没有问题的情况下运行。尽管系统允许从一个环境切换到另一个环境，但这对用户来说都是优先考虑的问题。有些程序在一个环境中工作而在另一个环境中无法工作，因此它也可以被视为选择使用哪个环境的一个因素。
+
+## 12.什么是交换空间？
+
+交换空间是Linux使用的一定空间，用于临时保存一些并发运行的程序。当RAM没有足够的内存来容纳正在执行的所有程序时，就会发生这种情况。
+
+## 13.什么是root帐户
+
+root帐户就像一个系统管理员帐户，允许你完全控制系统。你可以在此处创建和维护用户帐户，为每个帐户分配不同的权限。每次安装Linux时都是默认帐户。
+
+## 14.什么是LILO？
+
+LILO是Linux的引导加载程序。它主要用于将Linux操作系统加载到主内存中，以便它可以开始运行。
+
+## 15.什么是BASH？
+
+BASH是Bourne Again SHell的缩写。它由Steve Bourne编写，作为原始Bourne Shell（由/ bin / sh表示）的替代品。它结合了原始版本的Bourne Shell的所有功能，以及其他功能，使其更容易使用。从那以后，它已被改编为运行Linux的大多数系统的默认shell。
+
+## 16.什么是CLI？
+
+**命令行界面**（英语：command-line interface，缩写]：CLI）是在图形用户界面得到普及之前使用最为广泛的用户界面，它通常不支持鼠标，用户通过键盘输入指令，计算机接收到指令后，予以执行。也有人称之为字符用户界面（CUI）。
+
+通常认为，命令行界面（CLI）没有图形用户界面（GUI）那么方便用户操作。因为，命令行界面的软件通常需要用户记忆操作的命令，但是，由于其本身的特点，命令行界面要较图形用户界面节约计算机系统的资源。在熟记命令的前提下，使用命令行界面往往要较使用图形用户界面的操作速度要快。所以，图形用户界面的操作系统中，都保留着可选的命令行界面。
+
+## 17.什么是GUI？
+
+图形用户界面（Graphical User Interface，简称 GUI，又称图形用户接口）是指采用图形方式显示的计算机操作用户界面。
+
+图形用户界面是一种人与计算机通信的界面显示格式，允许用户使用鼠标等输入设备操纵屏幕上的图标或菜单选项，以选择命令、调用文件、启动程序或执行其它一些日常任务。与通过键盘输入文本或字符命令来完成例行任务的字符界面相比，图形用户界面有许多优点。
+
+## 18.开源的优势是什么？
+
+开源允许你将软件（包括源代码）免费分发给任何感兴趣的人。然后，人们可以添加功能，甚至可以调试和更正源代码中的错误。它们甚至可以让它运行得更好，然后再次自由地重新分配这些增强的源代码。这最终使社区中的每个人受益。
+
+## 19.GNU项目的重要性是什么？
+
+这种所谓的自由软件运动具有多种优势，例如可以自由地运行程序以及根据你的需要自由学习和修改程序。它还允许你将软件副本重新分发给其他人，以及自由改进软件并将其发布给公众。
+
+# 二、磁盘、目录、文件
+
+## 1.简单 Linux 文件系统？
+
+**在 Linux 操作系统中，所有被操作系统管理的资源，例如网络接口卡、磁盘驱动器、打印机、输入输出设备、普通文件或是目录都被看作是一个文件。**
+
+也就是说在 Linux 系统中有一个重要的概念：一切都是文件。其实这是 Unix 哲学的一个体现，而 Linux 是重写 Unix 而来，所以这个概念也就传承了下来。在 Unix 系统中，把一切资源都看作是文件，包括硬件设备。UNIX系统把每个硬件都看成是一个文件，通常称为设备文件，这样用户就可以用读写文件的方式实现对硬件的访问。
+
+Linux 支持 5 种文件类型，如下图所示：
+
+![图片](https://uploader.shimo.im/f/0TQJvP3JIT8SdZpV.png!thumbnail)
+
+## 2.Linux 的目录结构是怎样的？
+
+>这个问题，一般不会问。更多是实际使用时，需要知道。
+
+Linux 文件系统的结构层次鲜明，就像一棵倒立的树，最顶层是其根目录：
+
+![图片](https://uploader.shimo.im/f/9jIajpP6TR0dFXfS.png!thumbnail)
+
+常见目录说明：
+
+* **/bin：** 存放二进制可执行文件(ls,cat,mkdir等)，常用命令一般都在这里；
+* **/etc： **存放系统管理和配置文件；
+* **/home： **存放所有用户文件的根目录，是用户主目录的基点，比如用户user的主目录就是/home/user，可以用~user表示；
+* **/usr ：** 用于存放系统应用程序；
+* **/opt：** 额外安装的可选应用程序包所放置的位置。一般情况下，我们可以把tomcat等都安装到这里；
+* **/proc：** 虚拟文件系统目录，是系统内存的映射。可直接访问这个目录来获取系统信息；
+* **/root：** 超级用户（系统管理员）的主目录（特权阶级o）；
+* **/sbin: **存放二进制可执行文件，只有root才能访问。这里存放的是系统管理员使用的系统级别的管理命令和程序。如ifconfig等；
+* **/dev：** 用于存放设备文件；
+* **/mnt：** 系统管理员安装临时文件系统的安装点，系统提供这个目录是让用户临时挂载其他的文件系统；
+* **/boot：** 存放用于系统引导时使用的各种文件；
+* **/lib ： **存放着和系统运行相关的库文件 ；
+* **/tmp： **用于存放各种临时文件，是公用的临时文件存储点；
+* **/var：** 用于存放运行时需要改变数据的文件，也是某些大文件的溢出区，比方说各种服务的日志文件（系统启动日志等。）等；
+* **/lost+found：** 这个目录平时是空的，系统非正常关机而留下“无家可归”的文件（windows下叫什么.chk）就在这里。
+## 3.什么是 inode ？
+
+>一般来说，面试不会问 inode 。但是 inode 是一个重要概念，是理解 Unix/Linux 文件系统和硬盘储存的基础。
+
+理解inode，要从文件储存说起。
+
+文件储存在硬盘上，硬盘的最小存储单位叫做"扇区"（Sector）。每个扇区储存512字节（相当于0.5KB）。
+
+操作系统读取硬盘的时候，不会一个个扇区地读取，这样效率太低，而是一次性连续读取多个扇区，即一次性读取一个"块"（block）。这种由多个扇区组成的"块"，是文件存取的最小单位。"块"的大小，最常见的是4KB，即连续八个 sector组成一个 block。
+
+文件数据都储存在"块"中，那么很显然，我们还必须找到一个地方储存文件的元信息，比如文件的创建者、文件的创建日期、文件的大小等等。这种储存文件元信息的区域就叫做inode，中文译名为"索引节点"。
+
+每一个文件都有对应的inode，里面包含了与该文件有关的一些信息。
+
+简述 Linux 文件系统通过 i 节点把文件的逻辑结构和物理结构转换的工作过程？
+
+>如果看的一脸懵逼，也没关系。一般来说，面试官不太会问这个题目。
+
+Linux 通过 inode 节点表将文件的逻辑结构和物理结构进行转换。
+
+* inode 节点是一个 64 字节长的表，表中包含了文件的相关信息，其中有文件的大小、文件所有者、文件的存取许可方式以及文件的类型等重要信息。在 inode 节点表中最重要的内容是磁盘地址表。在磁盘地址表中有 13 个块号，文件将以块号在磁盘地址表中出现的顺序依次读取相应的块。
+* Linux 文件系统通过把 inode 节点和文件名进行连接，当需要读取该文件时，文件系统在当前目录表中查找该文件名对应的项，由此得到该文件相对应的 inode 节点号，通过该 inode 节点的磁盘地址表把分散存放的文件物理块连接成文件的逻辑结构。
+## 4.什么是硬链接和软链接？
+
+**①. 硬链接**
+
+由于 Linux 下的文件是通过索引节点(inode)来识别文件，硬链接可以认为是一个指针，指向文件索引节点的指针，系统并不为它重新分配 inode 。每添加一个一个硬链接，文件的链接数就加 1 。
+
+不足：
+
+* 不可以在不同文件系统的文件间建立链接；
+* 只有超级用户才可以为目录创建硬链接。
+
+**②. 软链接**
+
+软链接克服了硬链接的不足，没有任何文件系统的限制，任何用户可以创建指向目录的符号链接。因而现在更为广泛使用，它具有更大的灵活性，甚至可以跨越不同机器、不同网络对文件进行链接。
+
+不足：
+
+* 因为链接文件包含有原文件的路径信息，所以当原文件从一个目录下移到其他目录中，再访问链接文件，系统就找不到了，而硬链接就没有这个缺陷，你想怎么移就怎么移；还有它要系统分配额外的空间用于建立新的索引节点和保存原文件的路径。
+
+**实际场景下，基本是使用软链接。**总结区别如下：
+
+* 硬链接不可以跨分区，软件链可以跨分区。
+* 硬链接指向一个 inode 节点，而软链接则是创建一个新的 inode 节点。
+* 删除硬链接文件，不会删除原文件，删除软链接文件，会把原文件删除。
+## 4.RAID 是什么?
+
+* RAID 全称为独立磁盘冗余阵列(Redundant Array of Independent Disks)，基本思想就是把多个相对便宜的硬盘组合起来，成为一个硬盘阵列组，使性能达到甚至超过一个价格昂贵、 容量巨大的硬盘。RAID 通常被用在服务器电脑上，使用完全相同的硬盘组成一个逻辑扇区，因此操作系统只会把它当做一个硬盘。
+* RAID 分为不同的等级，各个不同的等级均在数据可靠性及读写性能上做了不同的权衡。在实际应用中，可以依据自己的实际需求选择不同的 RAID 方案。
+
+当然，因为很多公司都使用云服务，大家很难接触到 RAID 这个概念，更多的可能是普通云盘、SSD 云盘酱紫的概念。
+
+# 三、安全
+
+## 1.一台 Linux 系统初始化环境后需要做一些什么安全工作？
+
+* 添加普通用户登陆，禁止 root 用户登陆，更改 SSH 端口号。
+>修改 SSH 端口不一定绝对哈。当然，如果要暴露在外网，建议改下。l
+* 服务器使用密钥登陆，禁止密码登陆。
+* 开启防火墙，关闭 SElinux ，根据业务需求设置相应的防火墙规则。
+* 装 fail2ban 这种防止 SSH 暴力破击的软件。
+* 设置只允许公司办公网出口 IP 能登陆服务器(看公司实际需要)
+>也可以安装 VPN 等软件，只允许连接 VPN 到服务器上。
+* 修改历史命令记录的条数为 10 条。
+* 只允许有需要的服务器可以访问外网，其它全部禁止。
+* 做好软件层面的防护。
+  * 设置 nginx_waf 模块防止 SQL 注入。
+  * 把 Web 服务使用 www 用户启动，更改网站目录的所有者和所属组为 www 。
+## 2.什么叫 CC 攻击？什么叫 DDOS 攻击？
+
+* CC 攻击，主要是用来攻击页面的，模拟多个用户不停的对你的页面进行访问，从而使你的系统资源消耗殆尽。
+* DDOS 攻击，中文名叫分布式拒绝服务攻击，指借助服务器技术将多个计算机联合起来作为攻击平台，来对一个或多个目标发动 DDOS 攻击。
+>攻击，即是通过大量合法的请求占用大量网络资源，以达到瘫痪网络的目的。
+
+**怎么预防 CC 攻击和 DDOS 攻击？**
+
+防 CC、DDOS 攻击，这些只能是用硬件防火墙做流量清洗，将攻击流量引入黑洞。
+
+>流量清洗这一块，主要是买 ISP 服务商的防攻击的服务就可以，机房一般有空余流量，我们一般是买服务，毕竟攻击不会是持续长时间。
+## 3.什么是网站数据库注入？
+
+* 由于程序员的水平及经验参差不齐，大部分程序员在编写代码的时候，没有对用户输入数据的合法性进行判断。
+* 应用程序存在安全隐患。用户可以提交一段数据库查询代码，根据程序返回的结果，获得某些他想得知的数据，这就是所谓的 SQL 注入。
+* SQL注入，是从正常的 WWW 端口访问，而且表面看起来跟一般的 Web 页面访问没什么区别，如果管理员没查看日志的习惯，可能被入侵很长时间都不会发觉。
+
+**如何过滤与预防？**
+
+数据库网页端注入这种，可以考虑使用 nginx_waf 做过滤与预防。
+
+# 四、Shell
+
+## 1.Shell 脚本是什么？
+
+一个 Shell 脚本是一个文本文件，包含一个或多个命令。作为系统管理员，我们经常需要使用多个命令来完成一项任务，我们可以添加这些所有命令在一个文本文件(Shell 脚本)来完成这些日常工作任务。
+
+**什么是默认登录 Shell ？**
+
+在 Linux 操作系统，"/bin/bash" 是默认登录 Shell，是在创建用户时分配的。
+
+使用 chsh 命令可以改变默认的 Shell 。示例如下所示：
+
+```
+## chsh <用户名> -s <新shell>
+## chsh ThinkWon -s /bin/sh
+```
+**在 Shell 脚本中，如何写入注释？**
+注释可以用来描述一个脚本可以做什么和它是如何工作的。每一行注释以 # 开头。例子如下：
+
+```
+#!/bin/bash
+## This is a command
+echo “I am logged in as $USER”
+```
+## 2.语法级
+
+### ①. 可以在 Shell 脚本中使用哪些类型的变量？
+
+在 Shell 脚本，我们可以使用两种类型的变量：
+
+* 系统定义变量：系统变量是由系统系统自己创建的。这些变量通常由大写字母组成，可以通过 set 命令查看。
+* 用户定义变量：用户变量由系统用户来生成和定义，变量的值可以通过命令 "echo $<变量名>" 查看。
+
+**Shell脚本中 $? 标记的用途是什么？**
+
+在写一个 Shell 脚本时，如果你想要检查前一命令是否执行成功，在 if 条件中使用 $? 可以来检查前一命令的结束状态。
+
+* 如果结束状态是 0 ，说明前一个命令执行成功。例如：
+```
+root@localhost:~## ls /usr/bin/shar
+/usr/bin/shar
+root@localhost:~## echo $?
+0
+```
+* 如果结束状态不是0，说明命令执行失败。例如：
+```
+root@localhost:~## ls /usr/bin/share
+ls: cannot access /usr/bin/share: No such file or directory
+root@localhost:~## echo $?
+2
+```
+**Bourne Shell(bash) 中有哪些特殊的变量？**
+下面的表列出了 Bourne Shell 为命令行设置的特殊变量。
+
+```
+内建变量    解释
+$0    命令行中的脚本名字
+$1    第一个命令行参数
+$2    第二个命令行参数
+…..    …….
+$9    第九个命令行参数
+$##    命令行参数的数量
+$*    所有命令行参数，以空格隔开
+```
+**如何取消变量或取消变量赋值？**
+unset 命令用于取消变量或取消变量赋值。语法如下所示：
+
+```
+## unset <变量名>
+```
+### ②. Shell 脚本中 if 语法如何嵌套?
+
+```
+if [ 条件 ]
+then
+命令1
+命令2
+…..
+else
+if [ 条件 ]
+then
+命令1
+命令2
+….
+else
+命令1
+命令2
+…..
+fi
+fi
+```
+**在 Shell 脚本中如何比较两个数字？**
+在 if-then 中使用测试命令（ -gt 等）来比较两个数字。例如：
+
+```
+#!/bin/bash
+x=10
+y=20
+if [ $x -gt $y ]
+then
+echo “x is greater than y”
+else
+echo “y is greater than x”
+fi
+```
+### ③. Shell 脚本中 case 语句的语法?
+
+基础语法如下：
+
+```
+case 变量 in
+值1)
+命令1
+命令2
+…..
+最后命令
+!!
+值2)
+命令1
+命令2
+……
+最后命令
+;;
+esac
+```
+### ④. Shell 脚本中 for 循环语法？
+
+基础语法如下：
+
+```
+for 变量 in 循环列表
+do
+命令1
+命令2
+….
+最后命令
+done
+```
+### ⑤. Shell 脚本中 while 循环语法？
+
+如同 for 循环，while 循环只要条件成立就重复它的命令块。
+
+不同于 for循环，while 循环会不断迭代，直到它的条件不为真。
+
+基础语法：
+
+```
+while [ 条件 ]
+do
+命令…
+done
+```
+**do-while 语句的基本格式？**
+do-while 语句类似于 while 语句，但检查条件语句之前先执行命令（LCTT 译注：意即至少执行一次。）。下面是用 do-while 语句的语法：
+
+```
+do
+{
+命令
+} while (条件)
+```
+**Shell 脚本中 break 命令的作用？**
+break 命令一个简单的用途是退出执行中的循环。我们可以在 while 和 until 循环中使用 break 命令跳出循环。
+
+**Shell 脚本中 continue 命令的作用？**
+
+continue 命令不同于 break 命令，它只跳出当前循环的迭代，而不是整个循环。continue 命令很多时候是很有用的，例如错误发生，但我们依然希望继续执行大循环的时候。
+
+### ⑥. 如何使脚本可执行?
+
+使用 chmod 命令来使脚本可执行。例子如下：chmod a+x myscript.sh 。
+
+**#!/bin/bash 的作用？**
+
+#!/bin/bash 是 Shell 脚本的第一行，称为释伴（shebang）行。
+
+* 这里 # 符号叫做 hash ，而 ! 叫做 bang。
+* 它的意思是命令通过 /bin/bash 来执行。
+
+**如何调试 Shell脚本？**
+
+* 使用 -x' 数（sh -x myscript.sh）可以调试 Shell脚本。
+* 另一个种方法是使用 -nv 参数(sh -nv myscript.sh)。
+
+**如何将标准输出和错误输出同时重定向到同一位置?**
+
+* 方法一：2>&1 (如## ls /usr/share/doc > out.txt 2>&1 ) 。
+* 方法二：&> (如## ls /usr/share/doc &> out.txt ) 。
+
+**在 Shell 脚本中，如何测试文件？**
+
+test 命令可以用来测试文件。基础用法如下表格：
+
+```
+Test         用法
+-d 文件名    如果文件存在并且是目录，返回true
+-e 文件名    如果文件存在，返回true
+-f 文件名    如果文件存在并且是普通文件，返回true
+-r 文件名    如果文件存在并可读，返回true
+-s 文件名    如果文件存在并且不为空，返回true
+-w 文件名    如果文件存在并可写，返回true
+-x 文件名    如果文件存在并可执行，返回true
+```
+### ⑦. 在 Shell 脚本如何定义函数呢？
+
+函数是拥有名字的代码块。当我们定义代码块，我们就可以在我们的脚本调用函数名字，该块就会被执行。示例如下所示：
+
+```
+$ diskusage () { df -h ; }
+译注：下面是我给的shell函数语法，原文没有
+[ function ] 函数名 [()]
+{
+命令;
+[return int;]
+}
+```
+**如何让 Shell 就脚本得到来自终端的输入?**
+read 命令可以读取来自终端（使用键盘）的数据。read 命令得到用户的输入并置于你给出的变量中。例子如下：
+
+```
+## vi /tmp/test.sh
+#!/bin/bash
+echo ‘Please enter your name’
+read name
+echo “My Name is $name”
+## ./test.sh
+Please enter your name
+ThinkWon
+My Name is ThinkWon
+```
+**如何执行算术运算？**
+有两种方法来执行算术运算：
+
+* 使用 expr 命令：## expr 5 + 2 。
+* 用一个美元符号和方括号（$[ 表达式 ]）：test=$[16 + 4] ; test=$[16 + 4] 。
+## 3.编程题
+
+### ①. 判断一文件是不是字符设备文件，如果是将其拷贝到 /dev 目录下？
+
+```
+#!/bin/bash
+read -p "Input file name: " FILENAME
+if [ -c "$FILENAME" ];then
+  cp $FILENAME /dev
+fi
+```
+### ②. 添加一个新组为 class1 ，然后添加属于这个组的 30 个用户，用户名的形式为 stdxx ，其中 xx 从 01 到 30 ？
+
+```
+#!/bin/bash
+groupadd class1
+for((i=1;i<31;i++))
+do
+        if [ $i -le 10 ];then
+                useradd -g class1 std0$i
+        else
+                useradd -g class1 std$i
+        fi
+done
+```
+### ③. 编写 Shell 程序，实现自动删除 50 个账号的功能，账号名为stud1 至 stud50 ？
+
+```
+#!/bin/bash
+for((i=1;i<51;i++))
+do
+                userdel -r stud$i
+done
+```
+### ④. 写一个 sed 命令，修改 /tmp/input.txt 文件的内容？
+
+**要求：**
+
+* 删除所有空行。
+* 一行中，如果包含 “11111”，则在 “11111” 前面插入 “AAA”，在 “11111” 后面插入 “BBB” 。比如：将内容为 0000111112222 的一行改为 0000AAA11111BBB2222 。
+```
+[root@~]## cat -n /tmp/input.txt
+     1  000011111222
+     2
+     3  000011111222222
+     4  11111000000222
+     5
+     6
+     7  111111111111122222222222
+     8  2211111111
+     9  112222222
+    10  1122
+    11
+## 删除所有空行命令
+[root@~]## sed '/^$/d' /tmp/input.txt
+000011111222
+000011111222222
+11111000000222
+111111111111122222222222
+2211111111
+112222222
+1122
+## 插入指定的字符
+[root@~]## sed 's#\(11111\)#AAA\1BBB#g' /tmp/input.txt
+0000AAA11111BBB222
+0000AAA11111BBB222222
+AAA11111BBB000000222
+AAA11111BBBAAA11111BBB11122222222222
+22AAA11111BBB111
+112222222
+1122
+```
+# 五、实战
+
+## 1.如何选择 Linux 操作系统版本?
+
+一般来讲，桌面用户首选 Ubuntu ；服务器首选 RHEL 或 CentOS ，两者中首选 CentOS 。
+
+根据具体要求：
+
+* 安全性要求较高，则选择 Debian 或者 FreeBSD 。
+* 需要使用数据库高级服务和电子邮件网络应用的用户可以选择 SUSE 。
+* 想要新技术新功能可以选择 Feddora ，Feddora 是 RHEL 和 CentOS 的一个测试版和预发布版本。
+* 【重点】根据现有状况，绝大多数互联网公司选择 CentOS 。现在比较常用的是 6 系列，现在市场占有大概一半左右。另外的原因是 CentOS 更侧重服务器领域，并且无版权约束。
+>CentOS 7 系列，也慢慢使用的会比较多了。
+## 2.如何规划一台 Linux 主机，步骤是怎样？
+
+* 确定机器是做什么用的，比如是做 WEB 、DB、还是游戏服务器。
+>不同的用途，机器的配置会有所不同。
+* 确定好之后，就要定系统需要怎么安装，默认安装哪些系统、分区怎么做。
+* 需要优化系统的哪些参数，需要创建哪些用户等等的。
+## 3.请问当用户反馈网站访问慢，你会如何处理？
+
+**有哪些方面的因素会导致网站网站访问慢？**
+
+①、服务器出口带宽不够用
+
+>本身服务器购买的出口带宽比较小。一旦并发量大的话，就会造成分给每个用户的出口带宽就小，访问速度自然就会慢。
+>跨运营商网络导致带宽缩减。例如，公司网站放在电信的网络上，那么客户这边对接是长城宽带或联通，这也可能导致带宽的缩减。
+
+②、服务器负载过大，导致响应不过来
+
+>可以从两个方面入手分析：
+>分析系统负载，使用 w 命令或者 uptime 命令查看系统负载。如果负载很高，则使用 top 命令查看 CPU ，MEM 等占用情况，要么是 CPU 繁忙，要么是内存不够。
+>如果这二者都正常，再去使用 sar 命令分析网卡流量，分析是不是遭到了攻击。一旦分析出问题的原因，采取对应的措施解决，如决定要不要杀死一些进程，或者禁止一些访问等。
+
+③、数据库瓶颈
+
+>如果慢查询比较多。那么就要开发人员或 DBA 协助进行 SQL 语句的优化。
+>如果数据库响应慢，考虑可以加一个数据库缓存，如 Redis 等。然后，也可以搭建 MySQL 主从，一台 MySQL 服务器负责写，其他几台从数据库负责读。
+
+④、网站开发代码没有优化好
+
+>例如 SQL 语句没有优化，导致数据库读写相当耗时。
+
+**针对网站访问慢，怎么去排查？**
+
+* 首先要确定是用户端还是服务端的问题。当接到用户反馈访问慢，那边自己立即访问网站看看，如果自己这边访问快，基本断定是用户端问题，就需要耐心跟客户解释，协助客户解决问题。
+>不要上来就看服务端的问题。一定要从源头开始，逐步逐步往下。
+* 如果访问也慢，那么可以利用浏览器的调试功能，看看加载那一项数据消耗时间过多，是图片加载慢，还是某些数据加载慢。
+* 针对服务器负载情况。查看服务器硬件(网络、CPU、内存)的消耗情况。如果是购买的云主机，比如阿里云，可以登录阿里云平台提供各方面的监控，比如 CPU、内存、带宽的使用情况。
+* 如果发现硬件资源消耗都不高，那么就需要通过查日志，比如看看 MySQL慢查询的日志，看看是不是某条 SQL 语句查询慢，导致网站访问慢。
+
+**怎么去解决？**
+
+* 如果是出口带宽问题，那么久申请加大出口带宽。
+* 如果慢查询比较多，那么就要开发人员或 DBA 协助进行 SQL 语句的优化。
+* 如果数据库响应慢，考虑可以加一个数据库缓存，如 Redis 等等。然后也可以搭建MySQL 主从，一台 MySQL 服务器负责写，其他几台从数据库负责读。
+* 申请购买 CDN 服务，加载用户的访问。
+* 如果访问还比较慢，那就需要从整体架构上进行优化咯。做到专角色专用，多台服务器提供同一个服务。
+## 4.Linux 性能调优都有哪几种方法？
+
+* Disabling daemons (关闭 daemons)。
+* Shutting down the GUI (关闭 GUI)。
+* Changing kernel parameters (改变内核参数)。
+* Kernel parameters (内核参数)。
+* Tuning the processor subsystem (处理器子系统调优)。
+* Tuning the memory subsystem (内存子系统调优)。
+* Tuning the file system (文件系统子系统调优)。
+* Tuning the network subsystem（网络子系统调优)。
+# 六、文件管理命令
+
+## 1.cat 命令
+
+cat 命令用于连接文件并打印到标准输出设备上。
+
+cat 主要有三大功能：
+
+①.一次显示整个文件:
+
+```
+cat filename
+```
+②.从键盘创建一个文件:
+```
+cat > filename
+```
+只能创建新文件，不能编辑已有文件。
+③.将几个文件合并为一个文件:
+
+```
+cat file1 file2 > file
+```
+* -b 对非空输出行号
+* -n 输出所有行号
+
+**实例：**
+
+（1）把 log2012.log 的文件内容加上行号后输入 log2013.log 这个文件里
+
+```
+cat -n log2012.log log2013.log
+```
+（2）把 log2012.log 和 log2013.log 的文件内容加上行号（空白行不加）之后将内容附加到 log.log 里
+```
+cat -b log2012.log log2013.log log.log
+```
+（3）使用 here doc 生成新文件
+```
+cat >log.txt <<EOF
+>Hello
+>World
+>PWD=$(pwd)
+>EOF
+ls -l log.txt
+cat log.txt
+Hello
+World
+PWD=/opt/soft/test
+```
+（4）反向列示
+```
+tac log.txt
+PWD=/opt/soft/test
+World
+Hello
+```
+## 2.chmod 命令
+
+Linux/Unix 的文件调用权限分为三级 : 文件拥有者、群组、其他。利用 chmod 可以控制文件如何被他人所调用。
+
+用于改变 linux 系统文件或目录的访问权限。用它控制文件或目录的访问权限。该命令有两种用法。一种是包含字母和操作符表达式的文字设定法；另一种是包含数字的数字设定法。
+
+每一文件或目录的访问权限都有三组，每组用三位表示，分别为文件属主的读、写和执行权限；与属主同组的用户的读、写和执行权限；系统中其他用户的读、写和执行权限。可使用 ls -l test.txt 查找。
+
+以文件 log2012.log 为例：
+
+```
+-rw-r--r-- 1 root root 296K 11-13 06:03 log2012.log
+```
+第一列共有 10 个位置，第一个字符指定了文件类型。在通常意义上，一个目录也是一个文件。如果第一个字符是横线，表示是一个非目录的文件。如果是 d，表示是一个目录。从第二个字符开始到第十个 9 个字符，3 个字符一组，分别表示了 3 组用户对文件或者目录的权限。权限字符用横线代表空许可，r 代表只读，w 代表写，x 代表可执行。
+**常用参数：**
+
+```
+-c 当发生改变时，报告处理信息
+-R 处理指定目录以及其子目录下所有文件
+```
+权限范围：
+```
+u ：目录或者文件的当前的用户
+g ：目录或者文件的当前的群组
+o ：除了目录或者文件的当前用户或群组之外的用户或者群组
+a ：所有的用户及群组
+```
+权限代号：
+```
+r ：读权限，用数字4表示
+w ：写权限，用数字2表示
+x ：执行权限，用数字1表示
+- ：删除权限，用数字0表示
+s ：特殊权限
+```
+实例：
+（1）增加文件 t.log 所有用户可执行权限
+
+```
+chmod a+x t.log
+```
+（2）撤销原来所有的权限，然后使拥有者具有可读权限,并输出处理信息
+```
+chmod u=r t.log -c
+```
+（3）给 file 的属主分配读、写、执行(7)的权限，给file的所在组分配读、执行(5)的权限，给其他用户分配执行(1)的权限
+```
+chmod 751 t.log -c（或者：chmod u=rwx,g=rx,o=x t.log -c)
+```
+（4）将 test 目录及其子目录所有文件添加可读权限
+```
+chmod u+r,g+r,o+r -R text/ -c
+```
+## 3.chown 命令
+
+chown 将指定文件的拥有者改为指定的用户或组，用户可以是用户名或者用户 ID；组可以是组名或者组 ID；文件是以空格分开的要改变权限的文件列表，支持通配符。
+
+```
+-c 显示更改的部分的信息
+-R 处理指定目录及子目录
+```
+实例：
+（1）改变拥有者和群组 并显示改变信息
+
+```
+chown -c mail:mail log2012.log
+```
+（2）改变文件群组
+```
+chown -c :mail t.log
+```
+（3）改变文件夹及子文件目录属主及属组为 mail
+```
+chown -cR mail: test/
+```
+## 3.cp 命令
+
+将源文件复制至目标文件，或将多个源文件复制至目标目录。
+
+注意：命令行复制，如果目标文件已经存在会提示是否覆盖，而在 shell 脚本中，如果不加 -i 参数，则不会提示，而是直接覆盖！
+
+```
+-i 提示
+-r 复制目录及目录内所有项目
+-a 复制的文件与原文件时间一样
+```
+实例：
+（1）复制 a.txt 到 test 目录下，保持原文件时间，如果原文件存在提示是否覆盖。
+
+```
+cp -ai a.txt test
+```
+（2）为 a.txt 建议一个链接（快捷方式）
+```
+cp -s a.txt link_a.txt
+```
+## 4.find 命令
+
+用于在文件树中查找文件，并作出相应的处理。
+
+命令格式：
+
+```
+find pathname -options [-print -exec -ok ...]
+```
+命令参数：
+```
+pathname: find命令所查找的目录路径。例如用.来表示当前目录，用/来表示系统根目录。
+-print： find命令将匹配的文件输出到标准输出。
+-exec： find命令对匹配的文件执行该参数所给出的shell命令。相应命令的形式为'command' {  } \;，注意{   }和\；之间的空格。
+-ok： 和-exec的作用相同，只不过以一种更为安全的模式来执行该参数所给出的shell命令，在执行每一个命令之前，都会给出提示，让用户来确定是否执行。
+```
+命令选项：
+```
+-name 按照文件名查找文件
+-perm 按文件权限查找文件
+-user 按文件属主查找文件
+-group  按照文件所属的组来查找文件。
+-type  查找某一类型的文件，诸如：
+   b - 块设备文件
+   d - 目录
+   c - 字符设备文件
+   l - 符号链接文件
+   p - 管道文件
+   f - 普通文件
+```
+实例：
+（1）查找 48 小时内修改过的文件
+
+```
+find -atime -2
+```
+（2）在当前目录查找 以 .log 结尾的文件。 . 代表当前目录
+```
+find ./ -name '*.log'
+```
+（3）查找 /opt 目录下 权限为 777 的文件
+```
+find /opt -perm 777
+```
+（4）查找大于 1K 的文件
+```
+find -size +1000c
+```
+查找等于 1000 字符的文件
+```
+find -size 1000c 
+```
+-exec 参数后面跟的是 command 命令，它的终止是以 ; 为结束标志的，所以这句命令后面的分号是不可缺少的，考虑到各个系统中分号会有不同的意义，所以前面加反斜杠。{} 花括号代表前面find查找出来的文件名。
+## 5.head 命令
+
+head 用来显示档案的开头至标准输出中，默认 head 命令打印其相应文件的开头 10 行。
+
+常用参数：
+
+```
+-n<行数> 显示的行数（行数为复数表示从最后向前数）
+```
+实例：
+（1）显示 1.log 文件中前 20 行
+
+```
+head 1.log -n 20
+```
+（2）显示 1.log 文件前 20 字节
+```
+head -c 20 log2014.log
+```
+（3）显示 t.log最后 10 行
+```
+head -n -10 t.log
+```
+## 6.less 命令
+
+less 与 more 类似，但使用 less 可以随意浏览文件，而 more 仅能向前移动，却不能向后移动，而且 less 在查看之前不会加载整个文件。
+
+常用命令参数：
+
+```
+-i  忽略搜索时的大小写
+-N  显示每行的行号
+-o  <文件名> 将less 输出的内容在指定文件中保存起来
+-s  显示连续空行为一行
+/字符串：向下搜索“字符串”的功能
+?字符串：向上搜索“字符串”的功能
+n：重复前一个搜索（与 / 或 ? 有关）
+N：反向重复前一个搜索（与 / 或 ? 有关）
+-x <数字> 将“tab”键显示为规定的数字空格
+b  向后翻一页
+d  向后翻半页
+h  显示帮助界面
+Q  退出less 命令
+u  向前滚动半页
+y  向前滚动一行
+空格键 滚动一行
+回车键 滚动一页
+[pagedown]： 向下翻动一页
+[pageup]：   向上翻动一页
+```
+**实例：**
+（1）ps 查看进程信息并通过 less 分页显示
+
+```
+ps -aux | less -N
+```
+（2）查看多个文件
+```
+less 1.log 2.log
+```
+可以使用 n 查看下一个，使用 p 查看前一个。
+## 7.ln 命令
+
+功能是为文件在另外一个位置建立一个同步的链接，当在不同目录需要该问题时，就不需要为每一个目录创建同样的文件，通过 ln 创建的链接（link）减少磁盘占用量。
+
+链接分类：软件链接及硬链接
+
+软链接：
+
+* 软链接，以路径的形式存在。类似于Windows操作系统中的快捷方式
+* 软链接可以 跨文件系统 ，硬链接不可以
+* 软链接可以对一个不存在的文件名进行链接
+* 软链接可以对目录进行链接
+
+硬链接:
+
+* 硬链接，以文件副本的形式存在。但不占用实际空间。
+* 不允许给目录创建硬链接
+* 硬链接只有在同一个文件系统中才能创建
+
+需要注意：
+
+* 第一：ln命令会保持每一处链接文件的同步性，也就是说，不论你改动了哪一处，其它的文件都会发生相同的变化；
+* 第二：ln的链接又分软链接和硬链接两种，软链接就是ln –s 源文件 目标文件，它只会在你选定的位置上生成一个文件的镜像，不会占用磁盘空间，硬链接 ln 源文件 目标文件，没有参数-s， 它会在你选定的位置上生成一个和源文件大小相同的文件，无论是软链接还是硬链接，文件都保持同步变化。
+* 第三：ln指令用在链接文件或目录，如同时指定两个以上的文件或目录，且最后的目的地是一个已经存在的目录，则会把前面指定的所有文件或目录复制到该目录中。若同时指定多个文件或目录，且最后的目的地并非是一个已存在的目录，则会出现错误信息。
+
+**常用参数：**
+
+```
+-b 删除，覆盖以前建立的链接
+-s 软链接（符号链接）
+-v 显示详细处理过程
+```
+**实例：**
+（1）给文件创建软链接，并显示操作信息
+
+```
+ln -sv source.log link.log
+```
+（2）给文件创建硬链接，并显示操作信息
+```
+ln -v source.log link1.log
+```
+（3）给目录创建软链接
+```
+ln -sv /opt/soft/test/test3 /opt/soft/test/test5
+```
+## 8.locate 命令
+
+locate 通过搜寻系统内建文档数据库达到快速找到档案，数据库由 updatedb 程序来更新，updatedb 是由 cron daemon 周期性调用的。默认情况下 locate 命令在搜寻数据库时比由整个由硬盘资料来搜寻资料来得快，但较差劲的是 locate 所找到的档案若是最近才建立或 刚更名的，可能会找不到，在内定值中，updatedb 每天会跑一次，可以由修改 crontab 来更新设定值 (etc/crontab)。
+
+locate 与 find 命令相似，可以使用如 *、? 等进行正则匹配查找
+
+**常用参数：**
+
+```
+-l num（要显示的行数）
+-f   将特定的档案系统排除在外，如将proc排除在外
+-r   使用正则运算式做为寻找条件
+```
+**实例：**
+（1）查找和 pwd 相关的所有文件(文件名中包含 pwd）
+
+```
+locate pwd
+```
+（2）搜索 etc 目录下所有以 sh 开头的文件
+```
+locate /etc/sh
+```
+（3）查找 /var 目录下，以 reason 结尾的文件
+```
+locate -r '^/var.*reason$'（其中.表示一个字符，*表示任务多个；.*表示任意多个字符）
+```
+## 9.more 命令
+
+功能类似于 cat, more 会以一页一页的显示方便使用者逐页阅读，而最基本的指令就是按空白键（space）就往下一页显示，按 b 键就会往回（back）一页显示。
+
+**命令参数：**
+
+```
++n      从笫 n 行开始显示
+-n       定义屏幕大小为n行
++/pattern 在每个档案显示前搜寻该字串（pattern），然后从该字串前两行之后开始显示 
+-c       从顶部清屏，然后显示
+-d       提示“Press space to continue，’q’ to quit（按空格键继续，按q键退出）”，禁用响铃功能
+-l        忽略Ctrl+l（换页）字符
+-p       通过清除窗口而不是滚屏来对文件进行换页，与-c选项相似
+-s       把连续的多个空行显示为一行
+-u       把文件内容中的下画线去掉
+```
+**常用操作命令：**
+```
+Enter    向下 n 行，需要定义。默认为 1 行
+Ctrl+F   向下滚动一屏
+空格键  向下滚动一屏
+Ctrl+B  返回上一屏
+=       输出当前行的行号
+:f     输出文件名和当前行的行号
+V      调用vi编辑器
+!命令   调用Shell，并执行命令
+q       退出more
+```
+**实例：**
+（1）显示文件中从第3行起的内容
+
+```
+more +3 text.txt
+```
+（2）在所列出文件目录详细信息，借助管道使每次显示 5 行
+```
+ls -l | more -5
+```
+按空格显示下 5 行。
+## 10.mv 命令
+
+移动文件或修改文件名，根据第二参数类型（如目录，则移动文件；如为文件则重命令该文件）。
+
+当第二个参数为目录时，第一个参数可以是多个以空格分隔的文件或目录，然后移动第一个参数指定的多个文件到第二个参数指定的目录中。
+
+**实例：**
+
+（1）将文件 test.log 重命名为 test1.txt
+
+```
+mv test.log test1.txt
+```
+（2）将文件 log1.txt,log2.txt,log3.txt 移动到根的 test3 目录中
+```
+mv llog1.txt log2.txt log3.txt /test3
+```
+（3）将文件 file1 改名为 file2，如果 file2 已经存在，则询问是否覆盖
+```
+mv -i log1.txt log2.txt
+```
+（4）移动当前文件夹下的所有文件到上一级目录
+```
+mv * ../
+```
+## 11.rm 命令
+
+删除一个目录中的一个或多个文件或目录，如果没有使用 -r 选项，则 rm 不会删除目录。如果使用 rm 来删除文件，通常仍可以将该文件恢复原状。
+
+```
+rm [选项] 文件…
+```
+**实例：**
+（1）删除任何 .log 文件，删除前逐一询问确认：
+
+```
+rm -i *.log
+```
+（2）删除 test 子目录及子目录中所有档案删除，并且不用一一确认：
+```
+rm -rf test
+```
+（3）删除以 -f 开头的文件
+```
+rm -- -f*
+```
+## 12.tail 命令
+
+用于显示指定文件末尾内容，不指定文件时，作为输入信息进行处理。常用查看日志文件。
+
+**常用参数：**
+
+```
+-f 循环读取（常用于查看递增的日志文件）
+-n<行数> 显示行数（从后向前）
+```
+（1）循环读取逐渐增加的文件内容
+```
+ping 127.0.0.1 > ping.log &
+```
+后台运行：可使用 jobs -l 查看，也可使用 fg 将其移到前台运行。
+```
+tail -f ping.log
+```
+（查看日志）
+## 13.touch 命令
+
+Linux touch命令用于修改文件或者目录的时间属性，包括存取时间和更改时间。若文件不存在，系统会建立一个新的文件。
+
+ls -l 可以显示档案的时间记录。
+
+**语法**
+
+```
+touch [-acfm][-d<日期时间>][-r<参考文件或目录>] [-t<日期时间>][--help][--version][文件或目录…]
+```
+**参数说明：**
+* a 改变档案的读取时间记录。
+* m 改变档案的修改时间记录。
+* c 假如目的档案不存在，不会建立新的档案。与 --no-create 的效果一样。
+* f 不使用，是为了与其他 unix 系统的相容性而保留。
+* r 使用参考档的时间记录，与 --file 的效果一样。
+* d 设定时间与日期，可以使用各种不同的格式。
+* t 设定档案的时间记录，格式与 date 指令相同。
+* –no-create 不会建立新档案。
+* –help 列出指令格式。
+* –version 列出版本讯息。
+
+**实例**
+
+使用指令"touch"修改文件"testfile"的时间属性为当前系统时间，输入如下命令：
+
+```
+$ touch testfile                #修改文件的时间属性 
+```
+首先，使用ls命令查看testfile文件的属性，如下所示：
+```
+$ ls -l testfile                #查看文件的时间属性  
+#原来文件的修改时间为16:09  
+-rw-r--r-- 1 hdd hdd 55 2011-08-22 16:09 testfile  
+```
+执行指令"touch"修改文件属性以后，并再次查看该文件的时间属性，如下所示：
+```
+$ touch testfile                #修改文件时间属性为当前系统时间  
+$ ls -l testfile                #查看文件的时间属性  
+#修改后文件的时间属性为当前系统时间  
+-rw-r--r-- 1 hdd hdd 55 2011-08-22 19:53 testfile  
+```
+使用指令"touch"时，如果指定的文件不存在，则将创建一个新的空白文件。例如，在当前目录下，使用该指令创建一个空白文件"file"，输入如下命令：
+```
+$ touch file            #创建一个名为“file”的新的空白文件 
+```
+## 14.vim 命令
+
+Vim是从 vi 发展出来的一个文本编辑器。代码补完、编译及错误跳转等方便编程的功能特别丰富，在程序员中被广泛使用。
+
+* 打开文件并跳到第 10 行：vim +10 filename.txt 。
+* 打开文件跳到第一个匹配的行：vim +/search-term filename.txt 。
+* 以只读模式打开文件：vim -R /etc/passwd 。
+
+基本上 vi/vim 共分为三种模式，分别**是命令模式（Command mode），输入模式（Insert mode）和底线命令模式（Last line mode）**。
+
+简单的说，我们可以将这三个模式想成底下的图标来表示：
+
+![图片](https://uploader.shimo.im/f/rEfeDw3OtB0HHuyI.png!thumbnail)
+
+## 15.whereis 命令
+
+whereis 命令只能用于程序名的搜索，而且只搜索二进制文件（参数-b）、man说明文件（参数-m）和源代码文件（参数-s）。如果省略参数，则返回所有信息。whereis 及 locate 都是基于系统内建的数据库进行搜索，因此效率很高，而find则是遍历硬盘查找文件。
+
+常用参数：
+
+```
+-b   定位可执行文件。
+-m   定位帮助文件。
+-s   定位源代码文件。
+-u   搜索默认路径下除可执行文件、源代码文件、帮助文件以外的其它文件。
+```
+**实例：**
+（1）查找 locate 程序相关文件
+
+```
+whereis locate
+```
+（2）查找 locate 的源码文件
+```
+whereis -s locate
+```
+（3）查找 lcoate 的帮助文件
+```
+whereis -m locate
+```
+## 16.which 命令
+
+在 linux 要查找某个文件，但不知道放在哪里了，可以使用下面的一些命令来搜索：
+
+```
+which     查看可执行文件的位置。
+whereis 查看文件的位置。
+locate  配合数据库查看文件位置。
+find        实际搜寻硬盘查询文件名称。
+```
+which 是在 PATH 就是指定的路径中，搜索某个系统命令的位置，并返回第一个搜索结果。使用 which 命令，就可以看到某个系统命令是否存在，以及执行的到底是哪一个位置的命令。
+**常用参数：**
+
+```
+-n  指定文件名长度，指定的长度必须大于或等于所有文件中最长的文件名。
+```
+实例：
+（1）查看 ls 命令是否存在，执行哪个
+
+```
+which ls
+```
+（2）查看 which
+```
+which which
+```
+（3）查看 cd
+```
+which cd（显示不存在，因为 cd 是内建命令，而 which 查找显示是 PATH 中的命令）
+```
+查看当前 PATH 配置：
+```
+echo $PATH
+```
+或使用 env 查看所有环境变量及对应值
+# 七、文档编辑命令
+
+## 1.grep 命令
+
+强大的文本搜索命令，grep(Global Regular Expression Print) 全局正则表达式搜索。
+
+grep 的工作方式是这样的，它在一个或多个文件中搜索字符串模板。如果模板包括空格，则必须被引用，模板后的所有字符串被看作文件名。搜索的结果被送到标准输出，不影响原文件内容。
+
+命令格式：
+
+```
+grep [option] pattern file|dir
+```
+**常用参数：**
+```
+-A n --after-context显示匹配字符后n行
+-B n --before-context显示匹配字符前n行
+-C n --context 显示匹配字符前后n行
+-c --count 计算符合样式的列数
+-i 忽略大小写
+-l 只列出文件内容符合指定的样式的文件名称
+-f 从文件中读取关键词
+-n 显示匹配内容的所在文件中行数
+-R 递归查找文件夹
+```
+grep 的规则表达式:
+```
+^  #锚定行的开始 如：'^grep'匹配所有以grep开头的行。 
+$  #锚定行的结束 如：'grep$'匹配所有以grep结尾的行。 
+.  #匹配一个非换行符的字符 如：'gr.p'匹配gr后接一个任意字符，然后是p。  
+*  #匹配零个或多个先前字符 如：'*grep'匹配所有一个或多个空格后紧跟grep的行。
+.*   #一起用代表任意字符。  
+[]   #匹配一个指定范围内的字符，如'[Gg]rep'匹配Grep和grep。 
+[^]  #匹配一个不在指定范围内的字符，如：'[^A-FH-Z]rep'匹配不包含A-R和T-Z的一个字母开头，紧跟rep的行。  
+\(..\)  #标记匹配字符，如'\(love\)'，love被标记为1。   
+\<      #锚定单词的开始，如:'\<grep'匹配包含以grep开头的单词的行。
+\>      #锚定单词的结束，如'grep\>'匹配包含以grep结尾的单词的行。
+x\{m\}  #重复字符x，m次，如：'0\{5\}'匹配包含5个o的行。 
+x\{m,\}  #重复字符x,至少m次，如：'o\{5,\}'匹配至少有5个o的行。  
+x\{m,n\}  #重复字符x，至少m次，不多于n次，如：'o\{5,10\}'匹配5--10个o的行。  
+\w    #匹配文字和数字字符，也就是[A-Za-z0-9]，如：'G\w*p'匹配以G后跟零个或多个文字或数字字符，然后是p。  
+\W    #\w的反置形式，匹配一个或多个非单词字符，如点号句号等。  
+\b    #单词锁定符，如: '\bgrep\b'只匹配grep。
+```
+实例：
+（1）查找指定进程
+
+```
+ps -ef | grep svn
+```
+（2）查找指定进程个数
+```
+ps -ef | grep svn -c
+```
+（3）从文件中读取关键词
+```
+cat test1.txt | grep -f key.log
+```
+（4）从文件夹中递归查找以grep开头的行，并只列出文件
+```
+grep -lR '^grep' /tmp
+```
+（5）查找非x开关的行内容
+```
+grep '^[^x]' test.txt
+```
+（6）显示包含 ed 或者 at 字符的内容行
+```
+grep -E 'ed|at' test.txt
+```
+## 2.wc 命令
+
+wc(word count)功能为统计指定的文件中字节数、字数、行数，并将统计结果输出
+
+命令格式：
+
+```
+wc [option] file..
+```
+命令参数：
+```
+-c 统计字节数
+-l 统计行数
+-m 统计字符数
+-w 统计词数，一个字被定义为由空白、跳格或换行字符分隔的字符串
+```
+实例：
+（1）查找文件的 行数 单词数 字节数 文件名
+
+```
+wc text.txt
+```
+结果：
+```
+7     8     70     test.txt
+```
+（2）统计输出结果的行数
+```
+cat test.txt | wc -l
+```
+# 八、磁盘管理命令
+
+## 1.cd 命令
+
+cd(changeDirectory) 命令语法：
+
+```
+cd [目录名]
+```
+说明：切换当前目录至 dirName。
+**实例：**
+
+（1）进入要目录
+
+```
+cd /
+```
+（2）进入 “home” 目录
+```
+cd ~
+```
+（3）进入上一次工作路径
+```
+cd -
+```
+（4）把上个命令的参数作为cd参数使用。
+```
+cd !$
+```
+## 2.df 命令
+
+显示磁盘空间使用情况。获取硬盘被占用了多少空间，目前还剩下多少空间等信息，如果没有文件名被指定，则所有当前被挂载的文件系统的可用空间将被显示。默认情况下，磁盘空间将以 1KB 为单位进行显示，除非环境变量 POSIXLY_CORRECT 被指定，那样将以512字节为单位进行显示：
+
+```
+-a 全部文件系统列表
+-h 以方便阅读的方式显示信息
+-i 显示inode信息
+-k 区块为1024字节
+-l 只显示本地磁盘
+-T 列出文件系统类型
+```
+实例：
+（1）显示磁盘使用情况
+
+```
+df -l
+```
+（2）以易读方式列出所有文件系统及其类型
+```
+df -haT
+```
+## 3.du 命令
+
+du 命令也是查看使用空间的，但是与 df 命令不同的是 Linux du 命令是对文件和目录磁盘使用的空间的查看：
+
+命令格式：
+
+```
+du [选项] [文件]
+```
+常用参数：
+```
+-a 显示目录中所有文件大小
+-k 以KB为单位显示文件大小
+-m 以MB为单位显示文件大小
+-g 以GB为单位显示文件大小
+-h 以易读方式显示文件大小
+-s 仅显示总计
+-c或--total  除了显示个别目录或文件的大小外，同时也显示所有目录或文件的总和
+```
+实例：
+（1）以易读方式显示文件夹内及子文件夹大小
+
+```
+du -h scf/
+```
+（2）以易读方式显示文件夹内所有文件大小
+```
+du -ah scf/
+```
+（3）显示几个文件或目录各自占用磁盘空间的大小，还统计它们的总和
+```
+du -hc test/ scf/
+```
+（4）输出当前目录下各个子目录所使用的空间
+```
+du -hc --max-depth=1 scf/
+```
+## 4.ls命令
+
+就是 list 的缩写，通过 ls 命令不仅可以查看 linux 文件夹包含的文件，而且可以查看文件权限(包括目录、文件夹、文件权限)查看目录信息等等。
+
+常用参数搭配：
+
+```
+ls -a 列出目录所有文件，包含以.开始的隐藏文件
+ls -A 列出除.及..的其它文件
+ls -r 反序排列
+ls -t 以文件修改时间排序
+ls -S 以文件大小排序
+ls -h 以易读大小显示
+ls -l 除了文件名之外，还将文件的权限、所有者、文件大小等信息详细列出来
+```
+实例：
+(1) 按易读方式按时间反序排序，并显示文件详细信息
+
+```
+ls -lhrt
+```
+(2) 按大小反序显示文件详细信息
+```
+ls -lrS
+```
+(3)列出当前目录中所有以"t"开头的目录的详细内容
+```
+ls -l t*
+```
+(4) 列出文件绝对路径（不包含隐藏文件）
+```
+ls | sed "s:^:`pwd`/:"
+```
+(5) 列出文件绝对路径（包含隐藏文件）
+```
+find $pwd -maxdepth 1 | xargs ls -ld
+```
+## 5.mkdir 命令
+
+mkdir 命令用于创建文件夹。
+
+可用选项：
+
+* -m: 对新建目录设置存取权限，也可以用 chmod 命令设置;
+* -p: 可以是一个路径名称。此时若路径中的某些目录尚不存在,加上此选项后，系统将自动建立好那些尚不在的目录，即一次可以建立多个目录。
+
+**实例：**
+
+（1）当前工作目录下创建名为 t的文件夹
+
+```
+mkdir t
+```
+（2）在 tmp 目录下创建路径为 test/t1/t 的目录，若不存在，则创建：
+```
+mkdir -p /tmp/test/t1/t
+```
+## 6.pwd 命令
+
+pwd 命令用于查看当前工作目录路径。
+
+实例：
+
+（1）查看当前路径
+
+```
+pwd
+```
+（2）查看软链接的实际路径
+```
+pwd -P
+```
+## 7.rmdir 命令
+
+从一个目录中删除一个或多个子目录项，删除某目录时也必须具有对其父目录的写权限。
+
+注意：不能删除非空目录
+
+实例：
+
+（1）当 parent 子目录被删除后使它也成为空目录的话，则顺便一并删除：
+
+```
+rmdir -p parent/child/child11
+```
+# 九、网络通讯命令
+
+## 1.ifconfig 命令
+
+* ifconfig 用于查看和配置 Linux 系统的网络接口。
+* 查看所有网络接口及其状态：ifconfig -a 。
+* 使用 up 和 down 命令启动或停止某个接口：ifconfig eth0 up 和 ifconfig eth0 down 。
+## 2.iptables 命令
+
+iptables ，是一个配置 Linux 内核防火墙的命令行工具。功能非常强大，对于我们开发来说，主要掌握如何开放端口即可。例如：
+
+* 把来源 IP 为 192.168.1.101 访问本机 80 端口的包直接拒绝：iptables -I INPUT -s 192.168.1.101 -p tcp --dport 80 -j REJECT 。
+* 开启 80 端口，因为web对外都是这个端口
+```
+iptables -A INPUT -p tcp --dport 80 -j ACCEP
+```
+* 另外，要注意使用 iptables save 命令，进行保存。否则，服务器重启后，配置的规则将丢失。
+## 3.netstat 命令
+
+Linux netstat命令用于显示网络状态。
+
+利用netstat指令可让你得知整个Linux系统的网络情况。
+
+语法
+
+```
+netstat [-acCeFghilMnNoprstuvVwx][-A<网络类型>][--ip]
+```
+参数说明：
+* -a或–all 显示所有连线中的Socket。
+* -A<网络类型>或–<网络类型> 列出该网络类型连线中的相关地址。
+* -c或–continuous 持续列出网络状态。
+* -C或–cache 显示路由器配置的快取信息。
+* -e或–extend 显示网络其他相关信息。
+* -F或–fib 显示FIB。
+* -g或–groups 显示多重广播功能群组组员名单。
+* -h或–help 在线帮助。
+* -i或–interfaces 显示网络界面信息表单。
+* -l或–listening 显示监控中的服务器的Socket。
+* -M或–masquerade 显示伪装的网络连线。
+* -n或–numeric 直接使用IP地址，而不通过域名服务器。
+* -N或–netlink或–symbolic 显示网络硬件外围设备的符号连接名称。
+* -o或–timers 显示计时器。
+* -p或–programs 显示正在使用Socket的程序识别码和程序名称。
+* -r或–route 显示Routing Table。
+* -s或–statistice 显示网络工作信息统计表。
+* -t或–tcp 显示TCP传输协议的连线状况。
+* -u或–udp 显示UDP传输协议的连线状况。
+* -v或–verbose 显示指令执行过程。
+* -V或–version 显示版本信息。
+* -w或–raw 显示RAW传输协议的连线状况。
+* -x或–unix 此参数的效果和指定"-A unix"参数相同。
+* –ip或–inet 此参数的效果和指定"-A inet"参数相同。
+
+**实例**
+
+**如何查看系统都开启了哪些端口？**
+
+```
+[root@centos6 ~ 13:20 #55]# netstat -lnp
+Active Internet connections (only servers)
+Proto Recv-Q Send-Q Local Address               Foreign Address             State       PID/Program name
+tcp        0      0 0.0.0.0:22                  0.0.0.0:*                   LISTEN      1035/sshd
+tcp        0      0 :::22                       :::*                        LISTEN      1035/sshd
+udp        0      0 0.0.0.0:68                  0.0.0.0:*                               931/dhclient
+Active UNIX domain sockets (only servers)
+Proto RefCnt Flags       Type       State         I-Node PID/Program name    Path
+unix  2      [ ACC ]     STREAM     LISTENING     6825   1/init              @/com/ubuntu/upstart
+unix  2      [ ACC ]     STREAM     LISTENING     8429   1003/dbus-daemon    /var/run/dbus/system_bus_socket
+```
+**如何查看网络连接状况？**
+```
+[root@centos6 ~ 13:22 #58]# netstat -an
+Active Internet connections (servers and established)
+Proto Recv-Q Send-Q Local Address               Foreign Address             State
+tcp        0      0 0.0.0.0:22                  0.0.0.0:*                   LISTEN
+tcp        0      0 192.168.147.130:22          192.168.147.1:23893         ESTABLISHED
+tcp        0      0 :::22                       :::*                        LISTEN
+udp        0      0 0.0.0.0:68                  0.0.0.0:*
+```
+**如何统计系统当前进程连接数？**
+* 输入命令 netstat -an | grep ESTABLISHED | wc -l 。
+* 输出结果 177 。一共有 177 连接数。
+
+**用 netstat 命令配合其他命令，按照源 IP 统计所有到 80 端口的 ESTABLISHED 状态链接的个数？**
+
+>严格来说，这个题目考验的是对 awk 的使用。
+
+首先，使用 netstat -an|grep ESTABLISHED 命令。结果如下：
+
+```
+tcp        0      0 120.27.146.122:80       113.65.18.33:62721      ESTABLISHED
+tcp        0      0 120.27.146.122:80       27.43.83.115:47148      ESTABLISHED
+tcp        0      0 120.27.146.122:58838    106.39.162.96:443       ESTABLISHED
+tcp        0      0 120.27.146.122:52304    203.208.40.121:443      ESTABLISHED
+tcp        0      0 120.27.146.122:33194    203.208.40.122:443      ESTABLISHED
+tcp        0      0 120.27.146.122:53758    101.37.183.144:443      ESTABLISHED
+tcp        0      0 120.27.146.122:27017    23.105.193.30:50556     ESTABLISHED
+```
+## 4.ping 命令
+
+Linux ping命令用于检测主机。
+
+执行ping指令会使用ICMP传输协议，发出要求回应的信息，若远端主机的网络功能没有问题，就会回应该信息，因而得知该主机运作正常。
+
+指定接收包的次数
+
+```
+ping -c 2 www.baidu.com
+```
+## 5.telnet 命令
+
+Linux telnet命令用于远端登入。
+
+执行telnet指令开启终端机阶段作业，并登入远端主机。
+
+**语法**
+
+```
+telnet [-8acdEfFKLrx][-b<主机别名>][-e<脱离字符>][-k<域名>][-l<用户名称>][-n<记录文件>][-S<服务类型>][-X<认证形态>][主机名称或IP地址<通信端口>]
+```
+**参数说明：**
+* -8 允许使用8位字符资料，包括输入与输出。
+* -a 尝试自动登入远端系统。
+* -b<主机别名> 使用别名指定远端主机名称。
+* -c 不读取用户专属目录里的.telnetrc文件。
+* -d 启动排错模式。
+* -e<脱离字符> 设置脱离字符。
+* -E 滤除脱离字符。
+* -f 此参数的效果和指定"-F"参数相同。
+* -F 使用Kerberos V5认证时，加上此参数可把本地主机的认证数据上传到远端主机。
+* -k<域名> 使用Kerberos认证时，加上此参数让远端主机采用指定的领域名，而非该主机的域名。
+* -K 不自动登入远端主机。
+* -l<用户名称> 指定要登入远端主机的用户名称。
+* -L 允许输出8位字符资料。
+* -n<记录文件> 指定文件记录相关信息。
+* -r 使用类似rlogin指令的用户界面。
+* -S<服务类型> 设置telnet连线所需的IP TOS信息。
+* -x 假设主机有支持数据加密的功能，就使用它。
+* -X<认证形态> 关闭指定的认证形态。
+
+**实例**
+
+登录远程主机
+
+```
+# 登录IP为 192.168.0.5 的远程主机
+telnet 192.168.0.5 
+```
+# 十、系统管理命令
+
+## 1.date 命令
+
+显示或设定系统的日期与时间。
+
+命令参数：
+
+```
+-d<字符串>  显示字符串所指的日期与时间。字符串前后必须加上双引号。
+-s<字符串>  根据字符串来设置日期与时间。字符串前后必须加上双引号。
+-u  显示GMT。
+%H 小时(00-23)
+%I 小时(00-12)
+%M 分钟(以00-59来表示)
+%s 总秒数。起算时间为1970-01-01 00:00:00 UTC。
+%S 秒(以本地的惯用法来表示)
+%a 星期的缩写。
+%A 星期的完整名称。
+%d 日期(以01-31来表示)。
+%D 日期(含年月日)。
+%m 月份(以01-12来表示)。
+%y 年份(以00-99来表示)。
+%Y 年份(以四位数来表示)。
+```
+**实例：**
+（1）显示下一天
+
+```
+date +%Y%m%d --date="+1 day"  //显示下一天的日期
+```
+（2）-d参数使用
+```
+date -d "nov 22"  今年的 11 月 22 日是星期三
+date -d '2 weeks' 2周后的日期
+date -d 'next monday' (下周一的日期)
+date -d next-day +%Y%m%d（明天的日期）或者：date -d tomorrow +%Y%m%d
+date -d last-day +%Y%m%d(昨天的日期) 或者：date -d yesterday +%Y%m%d
+date -d last-month +%Y%m(上个月是几月)
+date -d next-month +%Y%m(下个月是几月)
+```
+## 2.free 命令
+
+显示系统内存使用情况，包括物理内存、交互区内存(swap)和内核缓冲区内存。
+
+**命令参数：**
+
+```
+-b 以Byte显示内存使用情况
+-k 以kb为单位显示内存使用情况
+-m 以mb为单位显示内存使用情况
+-g 以gb为单位显示内存使用情况
+-s<间隔秒数> 持续显示内存
+-t 显示内存使用总合
+```
+**实例：**
+（1）显示内存使用情况
+
+```
+free
+free -k
+free -m
+```
+（2）以总和的形式显示内存的使用信息
+```
+free -t
+```
+（3）周期性查询内存使用情况
+```
+free -s 10
+```
+## 3.kill 命令
+
+发送指定的信号到相应进程。不指定型号将发送SIGTERM（15）终止指定进程。如果任无法终止该程序可用"-KILL" 参数，其发送的信号为SIGKILL(9) ，将强制结束进程，使用ps命令或者jobs 命令可以查看进程号。root用户将影响用户的进程，非root用户只能影响自己的进程。
+
+常用参数：
+
+```
+-l  信号，若果不加信号的编号参数，则使用“-l”参数会列出全部的信号名称
+-a  当处理当前进程时，不限制命令名和进程号的对应关系
+-p  指定kill 命令只打印相关进程的进程号，而不发送任何信号
+-s  指定发送信号
+-u  指定用户
+```
+实例：
+（1）先使用ps查找进程pro1，然后用kill杀掉
+
+```
+kill -9 $(ps -ef | grep pro1)
+```
+## 4.ps 命令
+
+ps(process status)，用来查看当前运行的进程状态，一次性查看，如果需要动态连续结果使用 top
+
+linux上进程有5种状态:
+
+* 运行(正在运行或在运行队列中等待)
+* 中断(休眠中, 受阻, 在等待某个条件的形成或接受到信号)
+* 不可中断(收到信号不唤醒和不可运行, 进程必须等待直到有中断发生)
+* 僵死(进程已终止, 但进程描述符存在, 直到父进程调用wait4()系统调用后释放)
+* 停止(进程收到SIGSTOP, SIGSTP, SIGTIN, SIGTOU信号后停止运行运行)
+
+ps 工具标识进程的5种状态码:
+
+```
+D 不可中断 uninterruptible sleep (usually IO)
+R 运行 runnable (on run queue)
+S 中断 sleeping
+T 停止 traced or stopped
+Z 僵死 a defunct (”zombie”) process
+```
+**命令参数：**
+```
+-A 显示所有进程
+a 显示所有进程
+-a 显示同一终端下所有进程
+c 显示进程真实名称
+e 显示环境变量
+f 显示进程间的关系
+r 显示当前终端运行的进程
+-aux 显示所有包含其它使用的进程
+```
+实例：
+（1）显示当前所有进程环境变量及进程间关系
+
+```
+ps -ef
+```
+（2）显示当前所有进程
+```
+ps -A
+```
+（3）与grep联用查找某进程
+```
+ps -aux | grep apache
+```
+（4）找出与 cron 与 syslog 这两个服务有关的 PID 号码
+```
+ps aux | grep '(cron|syslog)'
+```
+## 5.rpm 命令
+
+Linux rpm 命令用于管理套件。
+
+rpm(redhat package manager) 原本是 Red Hat Linux 发行版专门用来管理 Linux 各项套件的程序，由于它遵循 GPL 规则且功能强大方便，因而广受欢迎。逐渐受到其他发行版的采用。RPM 套件管理方式的出现，让 Linux 易于安装，升级，间接提升了 Linux 的适用度。
+
+```
+# 查看系统自带jdk
+rpm -qa | grep jdk
+# 删除系统自带jdk
+rpm -e --nodeps 查看jdk显示的数据
+# 安装jdk
+rpm -ivh jdk-7u80-linux-x64.rpm
+```
+## 6.top 命令
+
+显示当前系统正在执行的进程的相关信息，包括进程 ID、内存占用率、CPU 占用率等
+
+**常用参数：**
+
+```
+-c 显示完整的进程命令
+-s 保密模式
+-p <进程号> 指定进程显示
+-n <次数>循环显示次数
+```
+**实例：**
+```
+top - 14:06:23 up 70 days, 16:44,  2 users,  load average: 1.25, 1.32, 1.35
+Tasks: 206 total,   1 running, 205 sleeping,   0 stopped,   0 zombie
+Cpu(s):  5.9%us,  3.4%sy,  0.0%ni, 90.4%id,  0.0%wa,  0.0%hi,  0.2%si,  0.0%st
+Mem:  32949016k total, 14411180k used, 18537836k free,   169884k buffers
+Swap: 32764556k total,        0k used, 32764556k free,  3612636k cached
+PID USER      PR  NI  VIRT  RES  SHR S %CPU %MEM    TIME+  COMMAND  
+28894 root      22   0 1501m 405m  10m S 52.2  1.3   2534:16 java  
+```
+前五行是当前系统情况整体的统计信息区。
+**第一行，任务队列信息，同 uptime 命令的执行结果，具体参数说明情况如下：**
+
+14:06:23 — 当前系统时间
+
+up 70 days, 16:44 — 系统已经运行了70天16小时44分钟（在这期间系统没有重启过的吆！）
+
+2 users — 当前有2个用户登录系统
+
+load average: 1.15, 1.42, 1.44 — load average后面的三个数分别是1分钟、5分钟、15分钟的负载情况。
+
+load average数据是每隔5秒钟检查一次活跃的进程数，然后按特定算法计算出的数值。如果这个数除以逻辑CPU的数量，结果高于5的时候就表明系统在超负荷运转了。
+
+**第二行，Tasks — 任务（进程），具体信息说明如下：**
+
+系统现在共有206个进程，其中处于运行中的有1个，205个在休眠（sleep），stoped状态的有0个，zombie状态（僵尸）的有0个。
+
+**第三行，cpu状态信息，具体属性说明如下：**
+
+```
+5.9%us — 用户空间占用CPU的百分比。
+3.4% sy — 内核空间占用CPU的百分比。
+0.0% ni — 改变过优先级的进程占用CPU的百分比
+90.4% id — 空闲CPU百分比
+0.0% wa — IO等待占用CPU的百分比
+0.0% hi — 硬中断（Hardware IRQ）占用CPU的百分比
+0.2% si — 软中断（Software Interrupts）占用CPU的百分比
+```
+备注：在这里CPU的使用比率和windows概念不同，需要理解linux系统用户空间和内核空间的相关知识！
+**第四行，内存状态，具体信息如下：**
+
+```
+32949016k total — 物理内存总量（32GB）
+14411180k used — 使用中的内存总量（14GB）
+18537836k free — 空闲内存总量（18GB）
+169884k buffers — 缓存的内存量 （169M）
+```
+**第五行，swap交换分区信息，具体信息说明如下：**
+```
+32764556k total — 交换区总量（32GB）
+0k used — 使用的交换区总量（0K）
+32764556k free — 空闲交换区总量（32GB）
+3612636k cached — 缓冲的交换区总量（3.6GB）
+```
+**第六行，空行。**
+**第七行以下：各进程（任务）的状态监控，项目列信息说明如下：**
+
+```
+PID — 进程id
+USER — 进程所有者
+PR — 进程优先级
+NI — nice值。负值表示高优先级，正值表示低优先级
+VIRT — 进程使用的虚拟内存总量，单位kb。VIRT=SWAP+RES
+RES — 进程使用的、未被换出的物理内存大小，单位kb。RES=CODE+DATA
+SHR — 共享内存大小，单位kb
+S — 进程状态。D=不可中断的睡眠状态 R=运行 S=睡眠 T=跟踪/停止 Z=僵尸进程
+%CPU — 上次更新到现在的CPU时间占用百分比
+%MEM — 进程使用的物理内存百分比
+TIME+ — 进程使用的CPU时间总计，单位1/100秒
+COMMAND — 进程名称（命令名/命令行）
+```
+**top 交互命令**
+```
+h 显示top交互命令帮助信息
+c 切换显示命令名称和完整命令行
+m 以内存使用率排序
+P 根据CPU使用百分比大小进行排序
+T 根据时间/累计时间进行排序
+W 将当前设置写入~/.toprc文件中
+o或者O 改变显示项目的顺序
+```
+## 7.yum 命令
+
+yum（ Yellow dog Updater, Modified）是一个在Fedora和RedHat以及SUSE中的Shell前端软件包管理器。
+
+基於RPM包管理，能够从指定的服务器自动下载RPM包并且安装，可以自动处理依赖性关系，并且一次安装所有依赖的软体包，无须繁琐地一次次下载、安装。
+
+yum提供了查找、安装、删除某一个、一组甚至全部软件包的命令，而且命令简洁而又好记。
+
+* 列出所有可更新的软件清单命令：yum check-update
+* 更新所有软件命令：yum update
+* 仅安装指定的软件命令：yum install <package_name>
+* 仅更新指定的软件命令：yum update <package_name>
+* 列出所有可安裝的软件清单命令：yum list
+* 删除软件包命令：yum remove <package_name>
+* 查找软件包 命令：yum search
+* 清除缓存命令:
+  * yum clean packages: 清除缓存目录下的软件包
+  * yum clean headers: 清除缓存目录下的 headers
+  * yum clean oldheaders: 清除缓存目录下旧的 headers
+  * yum clean, yum clean all (= yum clean packages; yum clean oldheaders) :清除缓存目录下的软件包及旧的headers
+
+**实例**
+
+安装 pam-devel
+
+```
+[root@www ~]# yum install pam-devel
+```
+# 十一、备份压缩命令
+
+## 1.bzip2 命令
+
+* 创建 *.bz2 压缩文件：bzip2 test.txt 。
+* 解压 *.bz2 文件：bzip2 -d test.txt.bz2 。
+## 2.gzip 命令
+
+* 创建一个 *.gz 的压缩文件：gzip test.txt 。
+* 解压 *.gz 文件：gzip -d test.txt.gz 。
+* 显示压缩的比率：gzip -l *.gz 。
+## 3.tar 命令
+
+用来压缩和解压文件。tar 本身不具有压缩功能，只具有打包功能，有关压缩及解压是调用其它的功能来完成。
+
+弄清两个概念：打包和压缩。打包是指将一大堆文件或目录变成一个总的文件；压缩则是将一个大的文件通过一些压缩算法变成一个小文件
+
+**常用参数：**
+
+```
+-c 建立新的压缩文件
+-f 指定压缩文件
+-r 添加文件到已经压缩文件包中
+-u 添加改了和现有的文件到压缩包中
+-x 从压缩包中抽取文件
+-t 显示压缩文件中的内容
+-z 支持gzip压缩
+-j 支持bzip2压缩
+-Z 支持compress解压文件
+-v 显示操作过程
+```
+有关 gzip 及 bzip2 压缩:
+```
+gzip 实例：压缩 gzip fileName .tar.gz 和.tgz  解压：gunzip filename.gz 或 gzip -d filename.gz
+          对应：tar zcvf filename.tar.gz     tar zxvf filename.tar.gz
+bz2实例：压缩 bzip2 -z filename .tar.bz2 解压：bunzip filename.bz2或bzip -d filename.bz2
+       对应：tar jcvf filename.tar.gz         解压：tar jxvf filename.tar.bz2
+```
+**实例：**
+（1）将文件全部打包成 tar 包
+
+```
+tar -cvf log.tar 1.log,2.log 或tar -cvf log.*
+```
+（2）将 /etc 下的所有文件及目录打包到指定目录，并使用 gz 压缩
+```
+tar -zcvf /tmp/etc.tar.gz /etc
+```
+（3）查看刚打包的文件内容（一定加z，因为是使用 gzip 压缩的）
+```
+tar -ztvf /tmp/etc.tar.gz
+```
+（4）要压缩打包 /home, /etc ，但不要 /home/dmtsai
+```
+tar --exclude /home/dmtsai -zcvf myfile.tar.gz /home/* /etc
+```
+## 4.unzip 命令
+
+* 解压 *.zip 文件：unzip test.zip 。
+* 查看 *.zip 文件的内容：unzip -l jasper.zip 。
