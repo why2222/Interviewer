@@ -11,6 +11,16 @@
   ```
 * **网络**
   * 输入url之后，页面发生了什么
+  * url的组成
+    ```
+    <scheme>://<user>:<password>@<host>:<port>/<path>:<params>?<query>#<frag>
+    ```
+  * [状态码](https://www.jianshu.com/p/f9c6ed6fa35e)
+    * 1XX 信息提示
+    * 2XX 请求成功
+    * 3XX 重定向
+    * 4XX 客户端错误
+    * 5XX 服务器错误
 
 * **测试**
   * 对登录界面进行测试
@@ -28,3 +38,9 @@
   * [用过哪些抓包工具](https://zhuanlan.zhihu.com/p/44912855)
     * fiddler
     * wireshark
+* **linux**
+  * 命令
+    * 修改用户权限 chown
+    * 查看当前端口的进程状态 netstat
+    * 查看当前路径 pwd
+    * 查看文档的后100行 tail -n 100 filename 
