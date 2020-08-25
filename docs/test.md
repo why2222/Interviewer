@@ -21,6 +21,20 @@
     * 3XX 重定向
     * 4XX 客户端错误
     * 5XX 服务器错误
+  * GET和POST
+  
+  |分类|GET|POST|
+  |:---:|:---:|:---:|
+  |回退/刷新|无害|数据会被重新提交|
+  |Book|可收藏为书签|不可收藏为书签|
+  |Cache|能被缓存|不能被缓存|
+  |编码类型|application/x-www-form-urlencoded|application/x-www-form-urlencoded 或 multipart/form-data为二进制数据使用多重编码|
+  |历史|参数表留在浏览器历史记录中|参数不会保留在浏览器历史记录中|
+  |数据类型|ACII|没有限制，允许二进制|
+  |安全性|与 POST 相比，GET 的安全性较差，因为所发送的数据是 URL 的一部分。在发送密码或其他敏感信息时绝不要使用 GET ！|POST 比 GET 更安全，因为参数不会被保存在浏览器历史或 web 服务器日志中。|
+  |可见性|	数据在 URL 中对所有人都是可见的|数据不会显示在 URL 中|
+  
+  * **!** HTTP的底层是TCP/IP。所以GET和POST的底层也是TCP/IP，也就是说，GET/POST都是TCP链接。GET和POST能做的事情是一样一样的。你要给GET加上request body，给POST带上url参数，技术上是完全行的通的。 
 
 * **测试**
   * 对登录界面进行测试
