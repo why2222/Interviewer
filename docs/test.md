@@ -21,7 +21,7 @@
     * 3XX 重定向
     * 4XX 客户端错误
     * 5XX 服务器错误
-  * GET和POST
+  * [GET和POST](https://www.oschina.net/news/77354/http-get-post-different)
   
   |分类|GET|POST|
   |:---:|:---:|:---:|
