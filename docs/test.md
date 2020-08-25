@@ -13,13 +13,26 @@
       - 对排序结果生成倒排表
       - 在倒排表内容上拼上数据地址链
       - 在查询的时候，先拿到倒排表内容，再取出数据地址链，从而拿到具体数据
-
-  * 给定商品和商品价格，找出价格最低的五个商品
-  ```sql
-  select good,price from table order by price asc limit 5
-  # 价格最高的5个
-  select good,price from table order by price desc limit 5
-  ```
+      
+    * 索引的优缺点
+      * 索引的优点
+         - 可以大大加快数据的检索速度，这也是创建索引的最主要的原因。
+         - 通过使用索引，可以在查询的过程中，使用优化隐藏器，提高系统的性能。
+      * 索引的缺点
+         - 时间方面：创建索引和维护索引要耗费时间，具体地，当对表中的数据进行增加、删除和修改的时候，索引也要动态的维护，会降低增/改/删的执行效率；
+         - 空间方面：索引需要占物理空间。
+  * 手撕
+    * 一个用户信息表、一个用户订单表，把所有用户订单信息输出（提醒用右连接）
+      * left join （左连接）：返回包括左表中的所有记录和右表中连接字段相等的记录。
+      * right join （右连接）：返回包括右表中的所有记录和左表中连接字段相等的记录。
+      * inner join （等值连接或者叫内连接）：只返回两个表中连接字段相等的行。
+      * full join （全外连接）：返回左右表中所有的记录和左右表中连接字段相等的记录。
+    * 给定商品和商品价格，找出价格最低的五个商品
+    ```sql
+    select good,price from table order by price asc limit 5
+    # 价格最高的5个
+    select good,price from table order by price desc limit 5
+    ```
 * **网络**
   * 输入url之后，页面发生了什么
   * [HTTP和HTTPS的区别](https://www.cnblogs.com/klb561/p/10289199.html)
