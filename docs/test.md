@@ -35,6 +35,9 @@
   |可见性|	数据在 URL 中对所有人都是可见的|数据不会显示在 URL 中|
   
   * **!** HTTP的底层是TCP/IP。所以GET和POST的底层也是TCP/IP，也就是说，GET/POST都是TCP链接。GET和POST能做的事情是一样一样的。你要给GET加上request body，给POST带上url参数，技术上是完全行的通的。 
+  * **!** 数据包
+    * 对于GET方式的请求，浏览器会把http header和data一并发送出去，服务器响应200（返回数据）；
+    * 而对于POST，浏览器先发送header，服务器响应100 continue，浏览器再发送data，服务器响应200 ok（返回数据）。
 
 * **测试**
   * 对登录界面进行测试
